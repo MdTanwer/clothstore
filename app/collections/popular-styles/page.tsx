@@ -9,7 +9,7 @@ export default function PopularStylesPage() {
 
       <div className="min-h-screen bg-white dark:bg-gray-900">
         {/* Hero Section */}
-        <div className="relative bg-gradient-to-r from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-700 pt-16 pb-24">
+        {/* <div className="relative bg-gradient-to-r from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-700 pt-16 pb-24">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center">
               <h1 className="text-4xl md:text-6xl font-light text-gray-900 dark:text-white mb-6">
@@ -26,7 +26,7 @@ export default function PopularStylesPage() {
               </div>
             </div>
           </div>
-        </div>
+        </div> */}
 
         {/* Client Component for Interactive Features */}
         <PopularStylesClient />

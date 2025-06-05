@@ -1,7 +1,6 @@
 "use client";
 
-import { FunnelIcon, HeartIcon, StarIcon } from "@heroicons/react/24/outline";
-import { HeartIcon as HeartIconSolid } from "@heroicons/react/24/solid";
+import { FunnelIcon, StarIcon } from "@heroicons/react/24/outline";
 import Image from "next/image";
 import { useState } from "react";
 
@@ -251,7 +250,7 @@ export default function PopularStylesClient() {
                     </span>
                   )}
                   {product.badge && (
-                    <span className="px-2 py-1 bg-black text-white text-xs font-medium rounded">
+                    <span className="px-2 py-1 bg-purple-500 text-white text-xs font-medium rounded">
                       {product.badge}
                     </span>
                   )}
@@ -261,18 +260,6 @@ export default function PopularStylesClient() {
                     </span>
                   )}
                 </div>
-
-                {/* Wishlist Button */}
-                <button
-                  onClick={() => toggleWishlist(product.id)}
-                  className="absolute top-3 right-3 p-2 bg-white dark:bg-gray-800 rounded-full shadow-md hover:shadow-lg transition-all duration-200"
-                >
-                  {wishlist.includes(product.id) ? (
-                    <HeartIconSolid className="w-5 h-5 text-red-500" />
-                  ) : (
-                    <HeartIcon className="w-5 h-5 text-gray-600 dark:text-gray-400" />
-                  )}
-                </button>
 
                 {/* Quick Actions Overlay */}
                 <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 transition-all duration-300 flex items-end justify-center pb-4 opacity-0 group-hover:opacity-100">

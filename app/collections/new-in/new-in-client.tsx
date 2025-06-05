@@ -2,11 +2,9 @@
 
 import {
   FunnelIcon,
-  HeartIcon,
   SparklesIcon,
   StarIcon,
 } from "@heroicons/react/24/outline";
-import { HeartIcon as HeartIconSolid } from "@heroicons/react/24/solid";
 import Image from "next/image";
 import { useState } from "react";
 
@@ -183,12 +181,12 @@ const sortOptions = [
   { value: "rating", label: "Highest Rated" },
 ];
 
-const timeFilters = [
-  { value: "all", label: "All New Items" },
-  { value: "week", label: "This Week" },
-  { value: "3days", label: "Last 3 Days" },
-  { value: "today", label: "Today" },
-];
+// const timeFilters = [
+//   { value: "all", label: "All New Items" },
+//   { value: "week", label: "This Week" },
+//   { value: "3days", label: "Last 3 Days" },
+//   { value: "today", label: "Today" },
+// ];
 
 export default function NewInClient() {
   const [selectedCategory, setSelectedCategory] = useState("All");
@@ -248,7 +246,7 @@ export default function NewInClient() {
             <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
               Arrival Time
             </h3>
-            <div className="flex flex-wrap gap-2">
+            {/* <div className="flex flex-wrap gap-2">
               {timeFilters.map((filter) => (
                 <button
                   key={filter.value}
@@ -262,7 +260,7 @@ export default function NewInClient() {
                   {filter.label}
                 </button>
               ))}
-            </div>
+            </div> */}
           </div>
 
           <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between space-y-4 lg:space-y-0">
@@ -356,18 +354,6 @@ export default function NewInClient() {
                     ? "Yesterday"
                     : `${product.daysAgo} days ago`}
                 </div>
-
-                {/* Wishlist Button */}
-                <button
-                  onClick={() => toggleWishlist(product.id)}
-                  className="absolute top-3 right-3 p-2 bg-white dark:bg-gray-800 rounded-full shadow-md hover:shadow-lg transition-all duration-200"
-                >
-                  {wishlist.includes(product.id) ? (
-                    <HeartIconSolid className="w-5 h-5 text-red-500" />
-                  ) : (
-                    <HeartIcon className="w-5 h-5 text-gray-600 dark:text-gray-400" />
-                  )}
-                </button>
 
                 {/* Quick Actions Overlay */}
                 <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 transition-all duration-300 flex items-end justify-center pb-4 opacity-0 group-hover:opacity-100">
