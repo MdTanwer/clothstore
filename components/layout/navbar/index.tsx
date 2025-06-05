@@ -7,7 +7,6 @@ import Link from "next/link";
 import { Suspense } from "react";
 import MobileMenu from "./mobile-menu";
 import Search, { SearchSkeleton } from "./search";
-import UserMenu from "./user-menu";
 
 const { SITE_NAME } = process.env;
 
@@ -41,19 +40,17 @@ export async function Navbar() {
       {/* Top Bar */}
       <div className="border-b border-gray-100 dark:border-gray-800 bg-gray-50 dark:bg-gray-900">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="flex h-10 items-center justify-between text-sm">
-            <div className="flex items-center space-x-6">
+          <div className="hidden lg:flex h-10 items-center justify-between text-sm">
+            <div className="hidden lg:flex items-center space-x-6">
               <span className="text-gray-600 dark:text-gray-300">
                 Free shipping on orders over £75
               </span>
-              <span className="hidden md:block text-gray-600 dark:text-gray-300">
-                •
-              </span>
-              <span className="hidden md:block text-gray-600 dark:text-gray-300">
+              <span className="text-gray-600 dark:text-gray-300">•</span>
+              <span className="text-gray-600 dark:text-gray-300">
                 14-day returns
               </span>
             </div>
-            <div className="flex items-center space-x-4">
+            <div className="flex items-center space-x-4 hidden lg:flex">
               {secondaryNavItems.map((item) => (
                 <div key={item.title}>
                   {item.component ? (
@@ -85,7 +82,7 @@ export async function Navbar() {
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="flex h-16 items-center justify-between">
             {/* Mobile menu button */}
-            <div className="flex md:hidden">
+            <div className="flex lg:hidden">
               <Suspense fallback={null}>
                 <MobileMenu menu={menuItems} />
               </Suspense>
@@ -106,7 +103,7 @@ export async function Navbar() {
             </div>
 
             {/* Desktop Navigation - Centered */}
-            <div className="hidden md:flex md:flex-1 md:justify-center">
+            <div className="hidden lg:flex lg:flex-1 lg:justify-center">
               <div className="flex space-x-12">
                 {menuItems.map((item: MenuItem) => (
                   <Link
@@ -124,9 +121,9 @@ export async function Navbar() {
             {/* Right side actions */}
             <div className="flex items-center space-x-8">
               {/* User Menu */}
-              <Suspense fallback={null}>
+              {/* <Suspense fallback={null}>
                 <UserMenu />
-              </Suspense>
+              </Suspense> */}
 
               {/* Cart */}
               <CartModal />
