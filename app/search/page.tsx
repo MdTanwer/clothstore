@@ -16,7 +16,24 @@ export default async function SearchPage(props: {
   const { sortKey, reverse } =
     sorting.find((item) => item.slug === sort) || defaultSort;
 
-  const products = await getProducts({ sortKey, reverse, query: searchValue });
+  // WooCommerce getProducts expects (limit, categoryId, sortKey, reverse)
+  // For search, we'll get all products and filter client-side since WooCommerce doesn't support search in this function
+  const allProducts = await getProducts(100, undefined, sortKey, reverse);
+
+  // Filter products by search query if provided
+  const products = searchValue
+    ? allProducts.filter(
+        (product) =>
+          product.title.toLowerCase().includes(searchValue.toLowerCase()) ||
+          product.description
+            ?.toLowerCase()
+            .includes(searchValue.toLowerCase()) ||
+          product.tags.some((tag) =>
+            tag.toLowerCase().includes(searchValue.toLowerCase())
+          )
+      )
+    : allProducts;
+
   const resultsText = products.length > 1 ? "results" : "result";
 
   return (
