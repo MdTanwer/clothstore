@@ -1,0 +1,50 @@
+import { CartProvider } from "components/cart/cart-context";
+import { createCart } from "lib/commerce";
+import { Inter } from "next/font/google";
+import { Toaster } from "sonner";
+import "./globals.css";
+
+const inter = Inter({
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-inter",
+});
+
+const { SITE_NAME } = process.env;
+const { COMPANY_NAME } = process.env;
+const baseUrl = process.env.NEXT_PUBLIC_VERCEL_URL
+  ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`
+  : "http://localhost:3000";
+
+export const metadata = {
+  metadataBase: new URL(baseUrl),
+  title: {
+    default: SITE_NAME || "Modest Clothing Store",
+    template: `%s | ${SITE_NAME || "Modest Clothing Store"}`,
+  },
+  robots: {
+    follow: true,
+    index: true,
+  },
+  description: `${COMPANY_NAME || "Modest Wear Co."} - Online Store for Modest Clothing`,
+};
+
+export default async function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  // Create the cart - don't await it, pass the Promise to the context provider
+  const cartPromise = createCart();
+
+  return (
+    <html lang="en" className={inter.variable}>
+      <body className="bg-neutral-50 text-black selection:bg-purple-500 selection:text-white">
+        <CartProvider cartPromise={cartPromise}>
+          <Toaster closeButton richColors />
+          {children}
+        </CartProvider>
+      </body>
+    </html>
+  );
+}

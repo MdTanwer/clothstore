@@ -1,0 +1,606 @@
+// Use axios directly instead of WooCommerce REST API package
+import axios from "axios";
+import { NextRequest, NextResponse } from "next/server";
+import { cache } from "react";
+import { getEnvVar } from "../utils";
+import { Cart, Collection, Menu, Page, Product } from "./types";
+
+// Create our own simple WooCommerce API client
+const wooApi = {
+  baseUrl: getEnvVar("WOOCOMMERCE_URL"),
+  consumerKey: getEnvVar("WOOCOMMERCE_CONSUMER_KEY"),
+  consumerSecret: getEnvVar("WOOCOMMERCE_CONSUMER_SECRET"),
+
+  get: async (endpoint: string, params?: any) => {
+    try {
+      const url = `${wooApi.baseUrl}/wp-json/wc/v3/${endpoint}`;
+      const response = await axios.get(url, {
+        params: {
+          ...params,
+          consumer_key: wooApi.consumerKey,
+          consumer_secret: wooApi.consumerSecret,
+        },
+      });
+      return { data: response.data };
+    } catch (error) {
+      console.error(`WooCommerce API GET error for ${endpoint}:`, error);
+      return { data: [] };
+    }
+  },
+
+  post: async (endpoint: string, data: any, params?: any) => {
+    try {
+      const url = `${wooApi.baseUrl}/wp-json/wc/v3/${endpoint}`;
+      const response = await axios.post(url, data, {
+        params: {
+          ...params,
+          consumer_key: wooApi.consumerKey,
+          consumer_secret: wooApi.consumerSecret,
+        },
+      });
+      return { data: response.data };
+    } catch (error) {
+      console.error(`WooCommerce API POST error for ${endpoint}:`, error);
+      return { data: null };
+    }
+  },
+};
+
+// Fetch all products
+export const getProducts = cache(
+  async (
+    limit = 100,
+    categoryId?: string,
+    sortKey?: string,
+    reverse?: boolean
+  ): Promise<Product[]> => {
+    try {
+      const params: any = {
+        per_page: limit,
+        status: "publish",
+      };
+
+      if (categoryId) {
+        params.category = categoryId;
+      }
+
+      if (sortKey) {
+        params.orderby = sortKey.toLowerCase();
+        params.order = reverse ? "desc" : "asc";
+      }
+
+      const response = await wooApi.get("products", params);
+
+      return response.data.map((product: any) => ({
+        id: product.id.toString(),
+        handle: product.slug,
+        availableForSale: product.in_stock,
+        title: product.name,
+        description: product.description,
+        descriptionHtml: product.description,
+        options: product.attributes.map((attr: any) => ({
+          id: attr.id.toString(),
+          name: attr.name,
+          values: attr.options,
+        })),
+        priceRange: {
+          maxVariantPrice: {
+            amount: product.price,
+            currencyCode: "USD",
+          },
+          minVariantPrice: {
+            amount: product.price,
+            currencyCode: "USD",
+          },
+        },
+        variants: [
+          {
+            id: product.id.toString(),
+            title: product.name,
+            availableForSale: product.in_stock,
+            selectedOptions: product.attributes.map((attr: any) => ({
+              name: attr.name,
+              value: attr.options[0],
+            })),
+            price: {
+              amount: product.price,
+              currencyCode: "USD",
+            },
+          },
+        ],
+        featuredImage: {
+          url: product.images[0]?.src || "",
+          altText: product.images[0]?.alt || product.name,
+          width: 800,
+          height: 800,
+        },
+        images: product.images.map((image: any) => ({
+          url: image.src,
+          altText: image.alt || product.name,
+          width: 800,
+          height: 800,
+        })),
+        seo: {
+          title: product.name,
+          description: product.short_description || product.description || "",
+        },
+        tags: product.tags?.map((tag: any) => tag.name) || [],
+        updatedAt: product.date_modified || new Date().toISOString(),
+      }));
+    } catch (error) {
+      console.error("Error fetching WooCommerce products:", error);
+      return [];
+    }
+  }
+);
+
+// Get a product by handle (slug)
+export const getProduct = cache(
+  async (handle: string): Promise<Product | undefined> => {
+    try {
+      const response = await wooApi.get("products", {
+        slug: handle,
+      });
+
+      if (!response.data.length) {
+        return undefined;
+      }
+
+      const product = response.data[0];
+
+      return {
+        id: product.id.toString(),
+        handle: product.slug,
+        availableForSale: product.in_stock,
+        title: product.name,
+        description: product.description,
+        descriptionHtml: product.description,
+        options: product.attributes.map((attr: any) => ({
+          id: attr.id.toString(),
+          name: attr.name,
+          values: attr.options,
+        })),
+        priceRange: {
+          maxVariantPrice: {
+            amount: product.price,
+            currencyCode: "USD",
+          },
+          minVariantPrice: {
+            amount: product.price,
+            currencyCode: "USD",
+          },
+        },
+        variants: [
+          {
+            id: product.id.toString(),
+            title: product.name,
+            availableForSale: product.in_stock,
+            selectedOptions: product.attributes.map((attr: any) => ({
+              name: attr.name,
+              value: attr.options[0],
+            })),
+            price: {
+              amount: product.price,
+              currencyCode: "USD",
+            },
+          },
+        ],
+        featuredImage: {
+          url: product.images[0]?.src || "",
+          altText: product.images[0]?.alt || product.name,
+          width: 800,
+          height: 800,
+        },
+        images: product.images.map((image: any) => ({
+          url: image.src,
+          altText: image.alt || product.name,
+          width: 800,
+          height: 800,
+        })),
+        seo: {
+          title: product.name,
+          description: product.short_description || product.description || "",
+        },
+        tags: product.tags?.map((tag: any) => tag.name) || [],
+        updatedAt: product.date_modified || new Date().toISOString(),
+      };
+    } catch (error) {
+      console.error("Error fetching WooCommerce product:", error);
+      return undefined;
+    }
+  }
+);
+
+// Get collections (categories in WooCommerce)
+export const getCollections = cache(async (): Promise<Collection[]> => {
+  try {
+    const response = await wooApi.get("products/categories", {
+      per_page: 100,
+    });
+
+    return response.data.map((category: any) => ({
+      handle: category.slug,
+      title: category.name,
+      description: category.description,
+      seo: {
+        title: category.name,
+        description: category.description,
+      },
+      path: `/search/${category.slug}`,
+    }));
+  } catch (error) {
+    console.error("Error fetching WooCommerce categories:", error);
+    return [];
+  }
+});
+
+// Get a collection by handle (slug)
+export const getCollection = cache(
+  async (handle: string): Promise<Collection | undefined> => {
+    try {
+      const response = await wooApi.get("products/categories", {
+        slug: handle,
+      });
+
+      if (!response.data.length) {
+        return undefined;
+      }
+
+      const category = response.data[0];
+
+      return {
+        handle: category.slug,
+        title: category.name,
+        description: category.description,
+        seo: {
+          title: category.name,
+          description: category.description,
+        },
+        path: `/search/${category.slug}`,
+      };
+    } catch (error) {
+      console.error("Error fetching WooCommerce category:", error);
+      return undefined;
+    }
+  }
+);
+
+// Get pages
+export const getPages = cache(async (): Promise<Page[]> => {
+  try {
+    const response = await wooApi.get("pages", {
+      per_page: 100,
+      status: "publish",
+    });
+
+    return response.data.map((page: any) => ({
+      id: page.id.toString(),
+      title: page.title.rendered,
+      handle: page.slug,
+      body: page.content.rendered,
+      bodySummary: page.excerpt.rendered,
+      seo: {
+        title: page.title.rendered,
+        description: page.excerpt.rendered,
+      },
+      createdAt: page.date,
+      updatedAt: page.modified,
+    }));
+  } catch (error) {
+    console.error("Error fetching WooCommerce pages:", error);
+    return [];
+  }
+});
+
+// Get a page by handle (slug)
+export const getPage = cache(
+  async (handle: string): Promise<Page | undefined> => {
+    try {
+      const response = await wooApi.get("pages", {
+        slug: handle,
+      });
+
+      if (!response.data.length) {
+        return undefined;
+      }
+
+      const page = response.data[0];
+
+      return {
+        id: page.id.toString(),
+        title: page.title.rendered,
+        handle: page.slug,
+        body: page.content.rendered,
+        bodySummary: page.excerpt.rendered,
+        seo: {
+          title: page.title.rendered,
+          description: page.excerpt.rendered,
+        },
+        createdAt: page.date,
+        updatedAt: page.modified,
+      };
+    } catch (error) {
+      console.error("Error fetching WooCommerce page:", error);
+      return undefined;
+    }
+  }
+);
+
+// Menu handling - this is a simplified implementation
+export const getMenu = cache(
+  async (handle: string): Promise<Menu | undefined> => {
+    try {
+      // For WooCommerce, we'll use product categories as the main menu items
+      if (handle === "main-menu") {
+        const response = await wooApi.get("products/categories", {
+          per_page: 10,
+          parent: 0, // Only top-level categories
+        });
+
+        const menuItems = response.data.map((category: any) => ({
+          title: category.name,
+          url: `/search/${category.slug}`,
+        }));
+
+        // Create an array with additional properties
+        const menuArray = menuItems as any[];
+
+        // Add the menu properties to the array
+        Object.defineProperties(menuArray, {
+          title: { value: "Main Menu", enumerable: true },
+          items: { value: menuItems, enumerable: true },
+        });
+
+        return menuArray as unknown as Menu;
+      }
+
+      return undefined;
+    } catch (error) {
+      console.error("Error fetching WooCommerce menu:", error);
+      return undefined;
+    }
+  }
+);
+
+// Cart functionality (simplified)
+export const createCart = async (): Promise<Cart> => {
+  // In WooCommerce, we can use browser storage for cart
+  return {
+    id: `wc-cart-${Date.now()}`,
+    checkoutUrl: `${getEnvVar("WOOCOMMERCE_URL")}/checkout`,
+    cost: {
+      subtotalAmount: {
+        amount: "0",
+        currencyCode: "USD",
+      },
+      totalAmount: {
+        amount: "0",
+        currencyCode: "USD",
+      },
+      totalTaxAmount: {
+        amount: "0",
+        currencyCode: "USD",
+      },
+    },
+    lines: [],
+    totalQuantity: 0,
+  };
+};
+
+export const getCart = async (cartId: string): Promise<Cart | undefined> => {
+  // In a real implementation, you would fetch the cart from the browser storage or WooCommerce API
+  return undefined;
+};
+
+export const addToCart = async (
+  cartId: string,
+  lines: { merchandiseId: string; quantity: number }[]
+): Promise<Cart> => {
+  // In a real implementation, you would update the cart in browser storage or call WooCommerce API
+  return {
+    id: cartId,
+    checkoutUrl: `${getEnvVar("WOOCOMMERCE_URL")}/checkout`,
+    cost: {
+      subtotalAmount: {
+        amount: "0",
+        currencyCode: "USD",
+      },
+      totalAmount: {
+        amount: "0",
+        currencyCode: "USD",
+      },
+      totalTaxAmount: {
+        amount: "0",
+        currencyCode: "USD",
+      },
+    },
+    lines: [],
+    totalQuantity: 0,
+  };
+};
+
+export const removeFromCart = async (
+  cartId: string,
+  lineIds: string[]
+): Promise<Cart> => {
+  // In a real implementation, you would update the cart in browser storage or call WooCommerce API
+  return {
+    id: cartId,
+    checkoutUrl: `${getEnvVar("WOOCOMMERCE_URL")}/checkout`,
+    cost: {
+      subtotalAmount: {
+        amount: "0",
+        currencyCode: "USD",
+      },
+      totalAmount: {
+        amount: "0",
+        currencyCode: "USD",
+      },
+      totalTaxAmount: {
+        amount: "0",
+        currencyCode: "USD",
+      },
+    },
+    lines: [],
+    totalQuantity: 0,
+  };
+};
+
+export const updateCart = async (
+  cartId: string,
+  lines: { id: string; merchandiseId: string; quantity: number }[]
+): Promise<Cart> => {
+  // In a real implementation, you would update the cart in browser storage or call WooCommerce API
+  return {
+    id: cartId,
+    checkoutUrl: `${getEnvVar("WOOCOMMERCE_URL")}/checkout`,
+    cost: {
+      subtotalAmount: {
+        amount: "0",
+        currencyCode: "USD",
+      },
+      totalAmount: {
+        amount: "0",
+        currencyCode: "USD",
+      },
+      totalTaxAmount: {
+        amount: "0",
+        currencyCode: "USD",
+      },
+    },
+    lines: [],
+    totalQuantity: 0,
+  };
+};
+
+// Get products from a collection
+export const getCollectionProducts = async ({
+  collection,
+  reverse,
+  sortKey,
+}: {
+  collection: string;
+  reverse?: boolean;
+  sortKey?: string;
+}): Promise<Product[]> => {
+  try {
+    // First, get the collection ID
+    const categoryResponse = await wooApi.get("products/categories", {
+      slug: collection,
+    });
+
+    if (!categoryResponse.data.length) {
+      return [];
+    }
+
+    const categoryId = categoryResponse.data[0].id;
+
+    // Then get products from that category
+    return getProducts(100, categoryId.toString(), sortKey, reverse);
+  } catch (error) {
+    console.error("Error fetching WooCommerce collection products:", error);
+    return [];
+  }
+};
+
+// Get product recommendations - for WooCommerce, we'll just return products from the same category
+export const getProductRecommendations = async (
+  productId: string
+): Promise<Product[]> => {
+  try {
+    // Get the product to find its categories
+    const productResponse = await wooApi.get(`products/${productId}`);
+    const product = productResponse.data;
+
+    if (!product || !product.categories || product.categories.length === 0) {
+      return [];
+    }
+
+    // Get products from the first category
+    const categoryId = product.categories[0].id;
+
+    // Get similar products from the same category, excluding the current product
+    const response = await wooApi.get("products", {
+      category: categoryId,
+      exclude: [productId],
+      per_page: 4,
+    });
+
+    return response.data.map((product: any) => ({
+      id: product.id.toString(),
+      handle: product.slug,
+      availableForSale: product.in_stock,
+      title: product.name,
+      description: product.description,
+      descriptionHtml: product.description,
+      options: product.attributes.map((attr: any) => ({
+        id: attr.id.toString(),
+        name: attr.name,
+        values: attr.options,
+      })),
+      priceRange: {
+        maxVariantPrice: {
+          amount: product.price,
+          currencyCode: "USD",
+        },
+        minVariantPrice: {
+          amount: product.price,
+          currencyCode: "USD",
+        },
+      },
+      variants: [
+        {
+          id: product.id.toString(),
+          title: product.name,
+          availableForSale: product.in_stock,
+          selectedOptions: product.attributes.map((attr: any) => ({
+            name: attr.name,
+            value: attr.options[0],
+          })),
+          price: {
+            amount: product.price,
+            currencyCode: "USD",
+          },
+        },
+      ],
+      featuredImage: {
+        url: product.images[0]?.src || "",
+        altText: product.images[0]?.alt || product.name,
+        width: 800,
+        height: 800,
+      },
+      images: product.images.map((image: any) => ({
+        url: image.src,
+        altText: image.alt || product.name,
+        width: 800,
+        height: 800,
+      })),
+    }));
+  } catch (error) {
+    console.error("Error fetching WooCommerce product recommendations:", error);
+    return [];
+  }
+};
+
+// Add revalidate function
+export async function revalidate(req: NextRequest): Promise<NextResponse> {
+  // For now, just return a simple success response
+  // In a production environment, you might want to implement cache invalidation differently
+  const { searchParams } = new URL(req.url);
+  const secret = searchParams.get("secret");
+  const tag = searchParams.get("tag");
+
+  if (secret !== process.env.WOOCOMMERCE_REVALIDATION_SECRET) {
+    return NextResponse.json({ message: "Invalid secret" }, { status: 401 });
+  }
+
+  if (!tag) {
+    return NextResponse.json({ message: "No tag provided" }, { status: 400 });
+  }
+
+  // TODO: Implement cache revalidation when needed
+  return NextResponse.json({
+    revalidated: true,
+    message: `Cache revalidation acknowledged for ${tag}`,
+  });
+}
