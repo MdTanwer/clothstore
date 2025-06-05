@@ -1,3 +1,4 @@
+import HeroBanner from "@/components/hero-banner";
 import AffiliateProgram from "components/affiliate-program";
 import { Carousel } from "components/carousel";
 import ContactButton from "components/contact-button";
@@ -5,7 +6,6 @@ import ContentBanner from "components/content-banner";
 import CookieConsent from "components/cookie-consent";
 import FoundersBio from "components/founders-bio";
 import { ThreeItemGrid } from "components/grid/three-items";
-import HeroBanner from "components/hero-banner";
 import Footer from "components/layout/footer";
 import { Navbar } from "components/layout/navbar";
 import NewsletterPopup from "components/newsletter-popup";

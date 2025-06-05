@@ -7,6 +7,7 @@ import Link from "next/link";
 import { Suspense } from "react";
 import MobileMenu from "./mobile-menu";
 import Search, { SearchSkeleton } from "./search";
+import UserMenu from "./user-menu";
 
 const { SITE_NAME } = process.env;
 
@@ -50,7 +51,7 @@ export async function Navbar() {
                 14-day returns
               </span>
             </div>
-            <div className="flex items-center space-x-4 hidden lg:flex">
+            <div className="items-center space-x-4 hidden lg:flex">
               {secondaryNavItems.map((item) => (
                 <div key={item.title}>
                   {item.component ? (
@@ -121,9 +122,9 @@ export async function Navbar() {
             {/* Right side actions */}
             <div className="flex items-center space-x-8">
               {/* User Menu */}
-              {/* <Suspense fallback={null}>
+              <Suspense fallback={null}>
                 <UserMenu />
-              </Suspense> */}
+              </Suspense>
 
               {/* Cart */}
               <CartModal />

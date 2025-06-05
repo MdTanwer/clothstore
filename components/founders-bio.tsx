@@ -3,18 +3,19 @@ import Link from "next/link";
 
 const founders = [
   {
-    name: "Sarah Ahmed",
+    name: "Amelia Richardson",
     role: "Co-Founder & CEO",
     image: "/founder-1.jpg",
-    bio: "Sarah has over 10 years of experience in fashion retail and is passionate about creating elegant modest wear that empowers women to express their personal style while maintaining their values.",
-    quote: "Fashion should never require you to compromise your beliefs.",
+    bio: "Amelia brings 12 years of experience from London's fashion district, previously working with heritage British brands. Her vision combines traditional British tailoring with contemporary modest wear, creating pieces that honor both style and values.",
+    quote: "Elegance is not about being noticed, it's about being remembered.",
   },
   {
-    name: "Amina Hassan",
+    name: "Zahra Khan",
     role: "Co-Founder & Creative Director",
     image: "/founder-2.jpg",
-    bio: "Amina brings her expertise in fashion design and her deep understanding of modest fashion trends to create collections that are both contemporary and timeless.",
-    quote: "Style is about being authentically yourself, beautifully.",
+    bio: "Zahra's multicultural background and fashion design expertise from Central Saint Martins brings a unique perspective to modest fashion. She specializes in creating versatile pieces that transition seamlessly from professional to personal settings.",
+    quote:
+      "True style transcends trends—it's about authenticity and confidence.",
   },
 ];
 
@@ -99,8 +100,8 @@ export default function FoundersBio() {
               </Link>
             </div>
 
+            {/* Stats */}
             <div className="space-y-6">
-              {/* Stats */}
               <div className="grid grid-cols-2 gap-6">
                 <div className="text-center p-4 bg-white rounded-lg">
                   <div className="text-2xl font-bold text-purple-600 mb-1">
