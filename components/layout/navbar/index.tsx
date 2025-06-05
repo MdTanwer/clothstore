@@ -97,7 +97,7 @@ export async function Navbar() {
               >
                 <LogoSquare />
                 <span className="text-xl font-bold text-gray-900 dark:text-white">
-                  {SITE_NAME || "K&F"}
+                  K&F
                 </span>
               </Link>
             </div>
