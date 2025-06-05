@@ -19,8 +19,8 @@ const baseUrl = process.env.NEXT_PUBLIC_VERCEL_URL
 export const metadata = {
   metadataBase: new URL(baseUrl),
   title: {
-    default: SITE_NAME || "Modest Clothing Store",
-    template: `%s | ${SITE_NAME || "Modest Clothing Store"}`,
+    default: SITE_NAME || "K&F",
+    template: `%s | ${SITE_NAME || "K&F"}`,
   },
   robots: {
     follow: true,

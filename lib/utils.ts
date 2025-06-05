@@ -54,7 +54,7 @@ export const getEnvVar = (key: string): string => {
         "cs_11a59025525782a5deb710dc225e68ddebd84648",
       WOOCOMMERCE_REVALIDATION_SECRET: "your-revalidation-secret",
       COMPANY_NAME: "Modest Wear Co.",
-      SITE_NAME: "Modest Clothing Store",
+      SITE_NAME: "K&F",
     };
 
     if (fallbacks[key]) {
