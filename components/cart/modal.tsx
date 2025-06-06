@@ -1,21 +1,21 @@
-'use client';
+"use client";
 
-import clsx from 'clsx';
-import { Dialog, Transition } from '@headlessui/react';
-import { ShoppingCartIcon, XMarkIcon } from '@heroicons/react/24/outline';
-import LoadingDots from 'components/loading-dots';
-import Price from 'components/price';
-import { DEFAULT_OPTION } from 'lib/constants';
-import { createUrl } from 'lib/utils';
-import Image from 'next/image';
-import Link from 'next/link';
-import { Fragment, useEffect, useRef, useState } from 'react';
-import { useFormStatus } from 'react-dom';
-import { createCartAndSetCookie, redirectToCheckout } from './actions';
-import { useCart } from './cart-context';
-import { DeleteItemButton } from './delete-item-button';
-import { EditItemQuantityButton } from './edit-item-quantity-button';
-import OpenCart from './open-cart';
+import { Dialog, Transition } from "@headlessui/react";
+import { ShoppingCartIcon, XMarkIcon } from "@heroicons/react/24/outline";
+import clsx from "clsx";
+import LoadingDots from "components/loading-dots";
+import Price from "components/price";
+import { DEFAULT_OPTION } from "lib/constants";
+import { createUrl } from "lib/utils";
+import Image from "next/image";
+import Link from "next/link";
+import { Fragment, useEffect, useRef, useState } from "react";
+import { useFormStatus } from "react-dom";
+import { createCartAndSetCookie, redirectToCheckout } from "./actions";
+import { useCart } from "./cart-context";
+import { DeleteItemButton } from "./delete-item-button";
+import { EditItemQuantityButton } from "./edit-item-quantity-button";
+import OpenCart from "./open-cart";
 
 type MerchandiseSearchParams = {
   [key: string]: string;
@@ -46,6 +46,11 @@ export default function CartModal() {
       quantityRef.current = cart?.totalQuantity;
     }
   }, [isOpen, cart?.totalQuantity, quantityRef]);
+
+  console.log("cart", cart);
+  console.log("cart", cart?.lines);
+  console.log("cart lines length:", cart?.lines?.length);
+  console.log("cart totalQuantity:", cart?.totalQuantity);
 
   return (
     <>
@@ -82,12 +87,22 @@ export default function CartModal() {
                 </button>
               </div>
 
-              {!cart || cart.lines.length === 0 ? (
+              {!cart || !cart.lines || cart.lines.length === 0 ? (
                 <div className="mt-20 flex w-full flex-col items-center justify-center overflow-hidden">
                   <ShoppingCartIcon className="h-16" />
                   <p className="mt-6 text-center text-2xl font-bold">
                     Your cart is empty.
                   </p>
+                  {/* Debug information */}
+                  <div className="mt-4 text-xs text-gray-500">
+                    <p>Debug Info:</p>
+                    <p>Cart exists: {cart ? "Yes" : "No"}</p>
+                    <p>
+                      Lines array:{" "}
+                      {cart?.lines ? `Array(${cart.lines.length})` : "None"}
+                    </p>
+                    <p>Total quantity: {cart?.totalQuantity || 0}</p>
+                  </div>
                 </div>
               ) : (
                 <div className="flex h-full flex-col justify-between overflow-hidden p-1">
@@ -233,7 +248,7 @@ function CloseCart({ className }: { className?: string }) {
     <div className="relative flex h-11 w-11 items-center justify-center rounded-md border border-neutral-200 text-black transition-colors dark:border-neutral-700 dark:text-white">
       <XMarkIcon
         className={clsx(
-          'h-6 transition-all ease-in-out hover:scale-110',
+          "h-6 transition-all ease-in-out hover:scale-110",
           className
         )}
       />
@@ -250,7 +265,7 @@ function CheckoutButton() {
       type="submit"
       disabled={pending}
     >
-      {pending ? <LoadingDots className="bg-white" /> : 'Proceed to Checkout'}
+      {pending ? <LoadingDots className="bg-white" /> : "Proceed to Checkout"}
     </button>
   );
 }

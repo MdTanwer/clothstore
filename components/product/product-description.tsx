@@ -7,15 +7,18 @@ import { useCart } from "components/cart/cart-context";
 import { useProduct } from "components/product/product-context";
 import Prose from "components/prose";
 import { Product, ProductVariant } from "lib/woocommerce/types";
-import { useActionState, useState } from "react";
+import { useActionState, useState, useTransition } from "react";
 
 export function ProductDescription({ product }: { product: Product }) {
   const { variants, availableForSale, options } = product;
-  const { addCartItem } = useCart();
+  const { addCartItem, isPending: cartPending } = useCart();
   const { state, updateOption } = useProduct();
   const [message, formAction] = useActionState(addItem, null);
   const [quantity, setQuantity] = useState(1);
   const [isWishlisted, setIsWishlisted] = useState(false);
+  const [isAddingToCart, setIsAddingToCart] = useState(false);
+  const [addedToCart, setAddedToCart] = useState(false);
+  const [isPending, startTransition] = useTransition();
 
   // Find the selected variant
   const variant = variants.find((variant: ProductVariant) =>
@@ -51,15 +54,32 @@ export function ProductDescription({ product }: { product: Product }) {
 
   const handleAddToCart = async () => {
     if (finalVariant) {
-      // Add multiple items based on quantity
-      for (let i = 0; i < quantity; i++) {
-        addCartItem(finalVariant, product);
+      setIsAddingToCart(true);
+      try {
+        // Add multiple items based on quantity
+        for (let i = 0; i < quantity; i++) {
+          addCartItem(finalVariant, product);
+        }
+        // Call the form action for any additional server-side logic
+        if (selectedVariantId) {
+          startTransition(() => {
+            formAction(selectedVariantId);
+          });
+        }
+
+        // Show success feedback
+        setAddedToCart(true);
+        setTimeout(() => setAddedToCart(false), 2000);
+      } catch (error) {
+        console.error("Error adding to cart:", error);
+      } finally {
+        setIsAddingToCart(false);
       }
-      formAction(selectedVariantId);
     }
   };
 
   const canAddToCart = availableForSale && selectedVariantId;
+  const isLoading = isAddingToCart || cartPending || isPending;
 
   return (
     <div className="flex flex-col space-y-6">
@@ -210,22 +230,27 @@ export function ProductDescription({ product }: { product: Product }) {
       <div className="space-y-4">
         <button
           onClick={handleAddToCart}
-          disabled={!canAddToCart}
+          disabled={!canAddToCart || isLoading}
           className={clsx(
             "w-full py-4 px-6 rounded-lg font-semibold text-lg transition-all duration-200 cursor-pointer",
             {
               "bg-black text-white hover:bg-gray-800 dark:bg-white dark:text-black dark:hover:bg-gray-200":
-                canAddToCart,
+                canAddToCart && !isLoading && !addedToCart,
+              "bg-green-600 text-white": addedToCart,
               "bg-gray-300 text-gray-500 cursor-not-allowed dark:bg-gray-700 dark:text-gray-400":
-                !canAddToCart,
+                !canAddToCart || isLoading,
             }
           )}
         >
-          {!availableForSale
-            ? "Out of Stock"
-            : !selectedVariantId
-              ? "Please Select Options"
-              : `Add ${quantity} to Cart`}
+          {isLoading
+            ? "Adding to Cart..."
+            : addedToCart
+              ? `Added ${quantity} to Cart ✓`
+              : !availableForSale
+                ? "Out of Stock"
+                : !selectedVariantId
+                  ? "Please Select Options"
+                  : `Add ${quantity} to Cart`}
         </button>
       </div>
 

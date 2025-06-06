@@ -1,5 +1,6 @@
 "use client";
 
+import { useCart } from "components/cart/cart-context";
 import { Product } from "lib/woocommerce/types";
 import Image from "next/image";
 import { useState } from "react";
@@ -14,6 +15,9 @@ export default function PopularStylesClient({
   categoryTitle = "Popular Styles",
 }: PopularStylesClientProps) {
   const [wishlist, setWishlist] = useState<string[]>([]);
+  const [addingToCart, setAddingToCart] = useState<string | null>(null);
+
+  const { addCartItem } = useCart();
 
   const toggleWishlist = (productId: string) => {
     setWishlist((prev) =>
@@ -21,6 +25,36 @@ export default function PopularStylesClient({
         ? prev.filter((id) => id !== productId)
         : [...prev, productId]
     );
+  };
+
+  const handleAddToCart = async (product: Product) => {
+    setAddingToCart(product.id);
+
+    try {
+      // Create a default variant for the product
+      const defaultVariant = {
+        id: `${product.id}-default`,
+        title: "Default",
+        availableForSale: product.availableForSale,
+        selectedOptions: [
+          {
+            name: "Size",
+            value: "M", // Default size
+          },
+        ],
+        price: product.priceRange.minVariantPrice,
+      };
+
+      addCartItem(defaultVariant, product);
+
+      // Reset the adding state after a short delay
+      setTimeout(() => {
+        setAddingToCart(null);
+      }, 1000);
+    } catch (error) {
+      console.error("Error adding to cart:", error);
+      setAddingToCart(null);
+    }
   };
 
   // Get unique categories from products
@@ -174,14 +208,23 @@ export default function PopularStylesClient({
 
                   {/* Add to Cart Button */}
                   <button
+                    onClick={() => handleAddToCart(product)}
+                    disabled={
+                      !product.availableForSale || addingToCart === product.id
+                    }
                     className={`w-full py-2 px-4 rounded-lg font-medium transition-colors ${
-                      product.availableForSale
-                        ? "bg-black dark:bg-white text-white dark:text-black hover:bg-gray-800 dark:hover:bg-gray-200"
-                        : "bg-gray-300 text-gray-500 cursor-not-allowed"
+                      !product.availableForSale
+                        ? "bg-gray-300 text-gray-500 cursor-not-allowed"
+                        : addingToCart === product.id
+                          ? "bg-green-600 text-white"
+                          : "bg-black dark:bg-white text-white dark:text-black hover:bg-gray-800 dark:hover:bg-gray-200"
                     }`}
-                    disabled={!product.availableForSale}
                   >
-                    {product.availableForSale ? "Add to Cart" : "Out of Stock"}
+                    {!product.availableForSale
+                      ? "Out of Stock"
+                      : addingToCart === product.id
+                        ? "Added to Cart ✓"
+                        : "Add to Cart"}
                   </button>
                 </div>
               </div>

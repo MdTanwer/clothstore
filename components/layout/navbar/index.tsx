@@ -8,7 +8,6 @@ import { Suspense } from "react";
 import MobileMenu from "./mobile-menu";
 import Search, { SearchSkeleton } from "./search";
 import UserMenu from "./user-menu";
-
 const { SITE_NAME } = process.env;
 
 // Main navigation items matching the WooCommerce categories

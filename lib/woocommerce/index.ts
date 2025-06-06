@@ -437,15 +437,15 @@ export const createCart = async (): Promise<Cart> => {
     cost: {
       subtotalAmount: {
         amount: "0",
-        currencyCode: "USD",
+        currencyCode: "GBP",
       },
       totalAmount: {
         amount: "0",
-        currencyCode: "USD",
+        currencyCode: "GBP",
       },
       totalTaxAmount: {
         amount: "0",
-        currencyCode: "USD",
+        currencyCode: "GBP",
       },
     },
     lines: [],
@@ -469,15 +469,15 @@ export const addToCart = async (
     cost: {
       subtotalAmount: {
         amount: "0",
-        currencyCode: "USD",
+        currencyCode: "GBP",
       },
       totalAmount: {
         amount: "0",
-        currencyCode: "USD",
+        currencyCode: "GBP",
       },
       totalTaxAmount: {
         amount: "0",
-        currencyCode: "USD",
+        currencyCode: "GBP",
       },
     },
     lines: [],
@@ -496,15 +496,15 @@ export const removeFromCart = async (
     cost: {
       subtotalAmount: {
         amount: "0",
-        currencyCode: "USD",
+        currencyCode: "GBP",
       },
       totalAmount: {
         amount: "0",
-        currencyCode: "USD",
+        currencyCode: "GBP",
       },
       totalTaxAmount: {
         amount: "0",
-        currencyCode: "USD",
+        currencyCode: "GBP",
       },
     },
     lines: [],
@@ -523,15 +523,15 @@ export const updateCart = async (
     cost: {
       subtotalAmount: {
         amount: "0",
-        currencyCode: "USD",
+        currencyCode: "GBP",
       },
       totalAmount: {
         amount: "0",
-        currencyCode: "USD",
+        currencyCode: "GBP",
       },
       totalTaxAmount: {
         amount: "0",
-        currencyCode: "USD",
+        currencyCode: "GBP",
       },
     },
     lines: [],

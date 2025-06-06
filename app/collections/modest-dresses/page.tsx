@@ -1,7 +1,7 @@
 import Footer from "components/layout/footer";
 import { Navbar } from "components/layout/navbar";
 import { getProductsByCategory } from "lib/woocommerce";
-import PopularStylesClient from "../popular-styles/popular-styles-client";
+import ModestDressesClient from "./modest-dresses-client";
 
 export const metadata = {
   title: "Modest Dresses | Klassy & Fab",
@@ -26,10 +26,7 @@ export default async function ModestDressesPage() {
         {/* Header */}
 
         {/* Products */}
-        <PopularStylesClient
-          products={products}
-          categoryTitle="Modest Dresses"
-        />
+        <ModestDressesClient products={products} />
       </div>
 
       <Footer />

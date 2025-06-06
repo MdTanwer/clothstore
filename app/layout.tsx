@@ -1,5 +1,5 @@
 import { CartProvider } from "components/cart/cart-context";
-import { createCart } from "lib/commerce";
+import { createCart } from "lib/woocommerce";
 import { Inter } from "next/font/google";
 import { Toaster } from "sonner";
 import "./globals.css";
