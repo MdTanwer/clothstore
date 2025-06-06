@@ -3,6 +3,8 @@ export type Maybe<T> = T | null;
 export type Money = {
   amount: string;
   currencyCode: string;
+  regularPrice?: string;
+  salePrice?: string | null;
 };
 
 export type Image = {
@@ -55,6 +57,10 @@ export type Product = {
   tags: string[];
   updatedAt: string;
   collections?: Connection<Collection>;
+  categories?: Array<{
+    slug: string;
+    name: string;
+  }>;
 };
 
 export type Connection<T> = {

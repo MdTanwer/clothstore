@@ -13,6 +13,10 @@ export function ProductDescription({ product }: { product: Product }) {
           <Price
             amount={product.priceRange.maxVariantPrice.amount}
             currencyCode={product.priceRange.maxVariantPrice.currencyCode}
+            regularPrice={product.priceRange.maxVariantPrice.regularPrice}
+            salePrice={
+              product.priceRange.maxVariantPrice.salePrice || undefined
+            }
           />
         </div>
       </div>

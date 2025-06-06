@@ -74,58 +74,91 @@ export const getProducts = cache(
       return response.data.map((product: any) => ({
         id: product.id.toString(),
         handle: product.slug,
-        availableForSale: product.in_stock,
+        availableForSale:
+          product.stock_status === "instock" && product.purchasable,
         title: product.name,
-        description: product.description,
-        descriptionHtml: product.description,
-        options: product.attributes.map((attr: any) => ({
-          id: attr.id.toString(),
-          name: attr.name,
-          values: attr.options,
-        })),
+        description: product.description || "",
+        descriptionHtml: product.description || "",
+        options:
+          product.attributes?.map((attr: any) => ({
+            id: attr.id?.toString() || attr.name,
+            name: attr.name,
+            values: attr.options || [],
+          })) || [],
         priceRange: {
           maxVariantPrice: {
             amount: product.price,
-            currencyCode: "USD",
+            currencyCode: "GBP",
+            regularPrice: product.regular_price,
+            salePrice: product.sale_price ? product.sale_price : null,
           },
           minVariantPrice: {
             amount: product.price,
-            currencyCode: "USD",
+            currencyCode: "GBP",
+            regularPrice: product.regular_price,
+            salePrice: product.sale_price ? product.sale_price : null,
           },
         },
         variants: [
           {
             id: product.id.toString(),
             title: product.name,
-            availableForSale: product.in_stock,
-            selectedOptions: product.attributes.map((attr: any) => ({
-              name: attr.name,
-              value: attr.options[0],
-            })),
+            availableForSale:
+              product.stock_status === "instock" && product.purchasable,
+            selectedOptions:
+              product.attributes?.map((attr: any) => ({
+                name: attr.name,
+                value: attr.options?.[0] || "",
+              })) || [],
             price: {
               amount: product.price,
-              currencyCode: "USD",
+              currencyCode: "GBP",
+              regularPrice: product.regular_price,
+              salePrice: product.sale_price ? product.sale_price : null,
             },
           },
         ],
         featuredImage: {
-          url: product.images[0]?.src || "",
-          altText: product.images[0]?.alt || product.name,
+          url: product.images?.[0]?.src || "",
+          altText: product.images?.[0]?.alt || product.name,
           width: 800,
           height: 800,
         },
-        images: product.images.map((image: any) => ({
-          url: image.src,
-          altText: image.alt || product.name,
-          width: 800,
-          height: 800,
+        categories: product.categories?.map((category: any) => ({
+          slug: category.slug,
+          name: category.name,
         })),
+
+        images:
+          product.images?.map((image: any) => ({
+            url: image.src,
+            altText: image.alt || product.name,
+            width: 800,
+            height: 800,
+          })) || [],
         seo: {
           title: product.name,
           description: product.short_description || product.description || "",
         },
         tags: product.tags?.map((tag: any) => tag.name) || [],
         updatedAt: product.date_modified || new Date().toISOString(),
+        // Additional WooCommerce specific fields
+        collections: product.categories
+          ? {
+              edges: product.categories.map((category: any) => ({
+                node: {
+                  handle: category.slug,
+                  title: category.name,
+                  description: "",
+                  seo: {
+                    title: category.name,
+                    description: "",
+                  },
+                  path: `/collections/${category.slug}`,
+                },
+              })),
+            }
+          : undefined,
       }));
     } catch (error) {
       console.error("Error fetching WooCommerce products:", error);
@@ -151,58 +184,91 @@ export const getProduct = cache(
       return {
         id: product.id.toString(),
         handle: product.slug,
-        availableForSale: product.in_stock,
+        availableForSale:
+          product.stock_status === "instock" && product.purchasable,
         title: product.name,
-        description: product.description,
-        descriptionHtml: product.description,
-        options: product.attributes.map((attr: any) => ({
-          id: attr.id.toString(),
-          name: attr.name,
-          values: attr.options,
-        })),
+        description: product.description || "",
+        descriptionHtml: product.description || "",
+        options:
+          product.attributes?.map((attr: any) => ({
+            id: attr.id?.toString() || attr.name,
+            name: attr.name,
+            values: attr.options || [],
+          })) || [],
         priceRange: {
           maxVariantPrice: {
-            amount: product.price,
-            currencyCode: "USD",
+            amount: product.price || "0",
+            currencyCode: "GBP",
+            regularPrice: product.regular_price || "0",
+            salePrice:
+              product.on_sale && product.sale_price ? product.sale_price : null,
           },
           minVariantPrice: {
-            amount: product.price,
-            currencyCode: "USD",
+            amount: product.price || "0",
+            currencyCode: "GBP",
+            regularPrice: product.regular_price || "0",
+            salePrice:
+              product.on_sale && product.sale_price ? product.sale_price : null,
           },
         },
         variants: [
           {
             id: product.id.toString(),
             title: product.name,
-            availableForSale: product.in_stock,
-            selectedOptions: product.attributes.map((attr: any) => ({
-              name: attr.name,
-              value: attr.options[0],
-            })),
+            availableForSale:
+              product.stock_status === "instock" && product.purchasable,
+            selectedOptions:
+              product.attributes?.map((attr: any) => ({
+                name: attr.name,
+                value: attr.options?.[0] || "",
+              })) || [],
             price: {
-              amount: product.price,
-              currencyCode: "USD",
+              amount: product.price || "0",
+              currencyCode: "GBP",
+              regularPrice: product.regular_price || "0",
+              salePrice:
+                product.on_sale && product.sale_price
+                  ? product.sale_price
+                  : null,
             },
           },
         ],
         featuredImage: {
-          url: product.images[0]?.src || "",
-          altText: product.images[0]?.alt || product.name,
+          url: product.images?.[0]?.src || "",
+          altText: product.images?.[0]?.alt || product.name,
           width: 800,
           height: 800,
         },
-        images: product.images.map((image: any) => ({
-          url: image.src,
-          altText: image.alt || product.name,
-          width: 800,
-          height: 800,
-        })),
+        images:
+          product.images?.map((image: any) => ({
+            url: image.src,
+            altText: image.alt || product.name,
+            width: 800,
+            height: 800,
+          })) || [],
         seo: {
           title: product.name,
           description: product.short_description || product.description || "",
         },
         tags: product.tags?.map((tag: any) => tag.name) || [],
         updatedAt: product.date_modified || new Date().toISOString(),
+        // Additional WooCommerce specific fields
+        collections: product.categories
+          ? {
+              edges: product.categories.map((category: any) => ({
+                node: {
+                  handle: category.slug,
+                  title: category.name,
+                  description: "",
+                  seo: {
+                    title: category.name,
+                    description: "",
+                  },
+                  path: `/collections/${category.slug}`,
+                },
+              })),
+            }
+          : undefined,
       };
     } catch (error) {
       console.error("Error fetching WooCommerce product:", error);
@@ -529,52 +595,88 @@ export const getProductRecommendations = async (
     return response.data.map((product: any) => ({
       id: product.id.toString(),
       handle: product.slug,
-      availableForSale: product.in_stock,
+      availableForSale:
+        product.stock_status === "instock" && product.purchasable,
       title: product.name,
-      description: product.description,
-      descriptionHtml: product.description,
-      options: product.attributes.map((attr: any) => ({
-        id: attr.id.toString(),
-        name: attr.name,
-        values: attr.options,
-      })),
+      description: product.description || "",
+      descriptionHtml: product.description || "",
+      options:
+        product.attributes?.map((attr: any) => ({
+          id: attr.id?.toString() || attr.name,
+          name: attr.name,
+          values: attr.options || [],
+        })) || [],
       priceRange: {
         maxVariantPrice: {
-          amount: product.price,
-          currencyCode: "USD",
+          amount: product.price || "0",
+          currencyCode: "GBP",
+          regularPrice: product.regular_price || "0",
+          salePrice:
+            product.on_sale && product.sale_price ? product.sale_price : null,
         },
         minVariantPrice: {
-          amount: product.price,
-          currencyCode: "USD",
+          amount: product.price || "0",
+          currencyCode: "GBP",
+          regularPrice: product.regular_price || "0",
+          salePrice:
+            product.on_sale && product.sale_price ? product.sale_price : null,
         },
       },
       variants: [
         {
           id: product.id.toString(),
           title: product.name,
-          availableForSale: product.in_stock,
-          selectedOptions: product.attributes.map((attr: any) => ({
-            name: attr.name,
-            value: attr.options[0],
-          })),
+          availableForSale:
+            product.stock_status === "instock" && product.purchasable,
+          selectedOptions:
+            product.attributes?.map((attr: any) => ({
+              name: attr.name,
+              value: attr.options?.[0] || "",
+            })) || [],
           price: {
-            amount: product.price,
-            currencyCode: "USD",
+            amount: product.price || "0",
+            currencyCode: "GBP",
+            regularPrice: product.regular_price || "0",
+            salePrice:
+              product.on_sale && product.sale_price ? product.sale_price : null,
           },
         },
       ],
       featuredImage: {
-        url: product.images[0]?.src || "",
-        altText: product.images[0]?.alt || product.name,
+        url: product.images?.[0]?.src || "",
+        altText: product.images?.[0]?.alt || product.name,
         width: 800,
         height: 800,
       },
-      images: product.images.map((image: any) => ({
-        url: image.src,
-        altText: image.alt || product.name,
-        width: 800,
-        height: 800,
-      })),
+      images:
+        product.images?.map((image: any) => ({
+          url: image.src,
+          altText: image.alt || product.name,
+          width: 800,
+          height: 800,
+        })) || [],
+      seo: {
+        title: product.name,
+        description: product.short_description || product.description || "",
+      },
+      tags: product.tags?.map((tag: any) => tag.name) || [],
+      updatedAt: product.date_modified || new Date().toISOString(),
+      collections: product.categories
+        ? {
+            edges: product.categories.map((category: any) => ({
+              node: {
+                handle: category.slug,
+                title: category.name,
+                description: "",
+                seo: {
+                  title: category.name,
+                  description: "",
+                },
+                path: `/collections/${category.slug}`,
+              },
+            })),
+          }
+        : undefined,
     }));
   } catch (error) {
     console.error("Error fetching WooCommerce product recommendations:", error);
@@ -604,3 +706,136 @@ export async function revalidate(req: NextRequest): Promise<NextResponse> {
     message: `Cache revalidation acknowledged for ${tag}`,
   });
 }
+
+// Get products by category slug
+export const getProductsByCategory = cache(
+  async (
+    categorySlug: string,
+    limit = 100,
+    sortKey?: string,
+    reverse?: boolean
+  ): Promise<Product[]> => {
+    try {
+      // First, get the category ID by slug
+      const categoryResponse = await wooApi.get("products/categories", {
+        slug: categorySlug,
+      });
+
+      if (!categoryResponse.data.length) {
+        console.log(`Category not found: ${categorySlug}`);
+        return [];
+      }
+
+      const categoryId = categoryResponse.data[0].id;
+      console.log(`Found category ${categorySlug} with ID: ${categoryId}`);
+
+      // Then get products from that category
+      const params: any = {
+        per_page: limit,
+        status: "publish",
+        category: categoryId,
+      };
+
+      if (sortKey) {
+        params.orderby = sortKey.toLowerCase();
+        params.order = reverse ? "desc" : "asc";
+      }
+
+      const response = await wooApi.get("products", params);
+      console.log(
+        `Found ${response.data.length} products in category ${categorySlug}`
+      );
+
+      return response.data.map((product: any) => ({
+        id: product.id.toString(),
+        handle: product.slug,
+        availableForSale:
+          product.stock_status === "instock" && product.purchasable,
+        title: product.name,
+        description: product.description || "",
+        descriptionHtml: product.description || "",
+        options:
+          product.attributes?.map((attr: any) => ({
+            id: attr.id?.toString() || attr.name,
+            name: attr.name,
+            values: attr.options || [],
+          })) || [],
+        priceRange: {
+          maxVariantPrice: {
+            amount: product.price,
+            currencyCode: "GBP",
+            regularPrice: product.regular_price,
+            salePrice: product.sale_price ? product.sale_price : null,
+          },
+          minVariantPrice: {
+            amount: product.price,
+            currencyCode: "GBP",
+            regularPrice: product.regular_price,
+            salePrice: product.sale_price ? product.sale_price : null,
+          },
+        },
+        variants: [
+          {
+            id: product.id.toString(),
+            title: product.name,
+            availableForSale:
+              product.stock_status === "instock" && product.purchasable,
+            selectedOptions:
+              product.attributes?.map((attr: any) => ({
+                name: attr.name,
+                value: attr.options?.[0] || "",
+              })) || [],
+            price: {
+              amount: product.price,
+              currencyCode: "GBP",
+              regularPrice: product.regular_price,
+              salePrice: product.sale_price ? product.sale_price : null,
+            },
+          },
+        ],
+        featuredImage: {
+          url: product.images?.[0]?.src || "",
+          altText: product.images?.[0]?.alt || product.name,
+          width: 800,
+          height: 800,
+        },
+        categories: product.categories?.map((category: any) => ({
+          slug: category.slug,
+          name: category.name,
+        })),
+        images:
+          product.images?.map((image: any) => ({
+            url: image.src,
+            altText: image.alt || product.name,
+            width: 800,
+            height: 800,
+          })) || [],
+        seo: {
+          title: product.name,
+          description: product.short_description || product.description || "",
+        },
+        tags: product.tags?.map((tag: any) => tag.name) || [],
+        updatedAt: product.date_modified || new Date().toISOString(),
+        collections: product.categories
+          ? {
+              edges: product.categories.map((category: any) => ({
+                node: {
+                  handle: category.slug,
+                  title: category.name,
+                  description: "",
+                  seo: {
+                    title: category.name,
+                    description: "",
+                  },
+                  path: `/collections/${category.slug}`,
+                },
+              })),
+            }
+          : undefined,
+      }));
+    } catch (error) {
+      console.error("Error fetching WooCommerce products by category:", error);
+      return [];
+    }
+  }
+);
