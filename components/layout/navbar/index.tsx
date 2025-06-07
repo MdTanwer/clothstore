@@ -1,14 +1,13 @@
-import CartModal from "components/cart/modal";
 import LogoSquare from "components/logo-square";
 import { SizeGuideButton } from "components/size-guide";
 import { getMenu } from "lib/commerce";
 import { MenuItem } from "lib/woocommerce/types";
 import Link from "next/link";
 import { Suspense } from "react";
+import CartIcon from "./cart-icon";
 import MobileMenu from "./mobile-menu";
 import Search, { SearchSkeleton } from "./search";
 import UserMenu from "./user-menu";
-const { SITE_NAME } = process.env;
 
 // Main navigation items matching the WooCommerce categories
 const mainNavItems = [
@@ -125,8 +124,8 @@ export async function Navbar() {
                 <UserMenu />
               </Suspense>
 
-              {/* Cart */}
-              <CartModal />
+              {/* Cart Icon - Links to cart page */}
+              <CartIcon />
             </div>
           </div>
         </div>
