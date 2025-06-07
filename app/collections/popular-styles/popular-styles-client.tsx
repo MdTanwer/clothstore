@@ -39,7 +39,7 @@ export default function PopularStylesClient({
         selectedOptions: [
           {
             name: "Size",
-            value: "M", // Default size
+            value: "M",
           },
         ],
         price: product.priceRange.minVariantPrice,

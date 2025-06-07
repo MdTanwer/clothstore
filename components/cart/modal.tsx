@@ -54,9 +54,9 @@ export default function CartModal() {
 
   return (
     <>
-      <button aria-label="Open cart" onClick={openCart}>
+      <Link href="/cart" aria-label="Open cart">
         <OpenCart quantity={cart?.totalQuantity} />
-      </button>
+      </Link>
       <Transition show={isOpen}>
         <Dialog onClose={closeCart} className="relative z-50">
           <Transition.Child
