@@ -1,4 +1,5 @@
 import { CartProvider } from "components/cart/cart-context";
+import { CurrencyProvider } from "components/currency/currency-context";
 import { createCart } from "lib/woocommerce";
 import { Inter } from "next/font/google";
 import { Toaster } from "sonner";
@@ -40,10 +41,12 @@ export default async function RootLayout({
   return (
     <html lang="en" className={inter.variable}>
       <body className="bg-neutral-50 text-black selection:bg-purple-500 selection:text-white">
-        <CartProvider cartPromise={cartPromise}>
-          <Toaster closeButton richColors />
-          {children}
-        </CartProvider>
+        <CurrencyProvider>
+          <CartProvider cartPromise={cartPromise}>
+            <Toaster closeButton richColors />
+            {children}
+          </CartProvider>
+        </CurrencyProvider>
       </body>
     </html>
   );

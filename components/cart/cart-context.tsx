@@ -12,7 +12,6 @@ import React, {
   useContext,
   useEffect,
   useMemo,
-  useOptimistic,
   useState,
   useTransition,
 } from "react";
@@ -43,6 +42,13 @@ function saveCartToStorage(cart: Cart) {
     try {
       localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(cart));
       console.log("Cart saved to localStorage:", cart);
+
+      // Dispatch custom event to notify all cart components
+      window.dispatchEvent(
+        new CustomEvent("cartUpdated", {
+          detail: { cart },
+        })
+      );
     } catch (error) {
       console.error("Failed to save cart to localStorage:", error);
     }
@@ -184,13 +190,31 @@ function cartReducer(state: Cart | undefined, action: CartAction): Cart {
   switch (action.type) {
     case "UPDATE_ITEM": {
       const { merchandiseId, updateType } = action.payload;
+      console.log("UPDATE_ITEM action:", { merchandiseId, updateType });
+      console.log("Current cart lines:", currentCart.lines);
+
       const updatedLines = currentCart.lines
-        .map((item) =>
-          item.merchandise.id === merchandiseId
-            ? updateCartItem(item, updateType)
-            : item
-        )
+        .map((item) => {
+          console.log(
+            "Checking item:",
+            item.merchandise.id,
+            "vs",
+            merchandiseId
+          );
+          console.log("Item merchandise ID type:", typeof item.merchandise.id);
+          console.log("Merchandise ID type:", typeof merchandiseId);
+          console.log("Exact match:", item.merchandise.id === merchandiseId);
+
+          if (item.merchandise.id === merchandiseId) {
+            const updatedItem = updateCartItem(item, updateType);
+            console.log("Updated item:", updatedItem);
+            return updatedItem;
+          }
+          return item;
+        })
         .filter(Boolean) as CartItem[];
+
+      console.log("Updated lines:", updatedLines);
 
       if (updatedLines.length === 0) {
         const emptyCart = createEmptyCart();
@@ -204,6 +228,7 @@ function cartReducer(state: Cart | undefined, action: CartAction): Cart {
         lines: updatedLines,
       };
 
+      console.log("Final updated cart:", updatedCart);
       saveCartToStorage(updatedCart);
       return updatedCart;
     }
@@ -272,56 +297,143 @@ export function useCart() {
   }
 
   const [isClient, setIsClient] = useState(false);
+  const [cart, setCart] = useState<Cart | null>(null);
+  const [isPending, startTransition] = useTransition();
   const initialCart = use(context.cartPromise);
 
   // Load cart from localStorage on client side
-  const [localCart, setLocalCart] = useState<Cart | null>(null);
-
   useEffect(() => {
     setIsClient(true);
     const storedCart = loadCartFromStorage();
     if (storedCart) {
-      setLocalCart(storedCart);
+      setCart(storedCart);
       console.log("Loaded cart from localStorage:", storedCart);
+    } else if (initialCart) {
+      setCart(initialCart);
+    } else {
+      setCart(createEmptyCart());
     }
+  }, [initialCart]);
+
+  // Listen for storage changes from other tabs/windows
+  useEffect(() => {
+    const handleStorageChange = (e: StorageEvent) => {
+      if (e.key === CART_STORAGE_KEY && e.newValue) {
+        try {
+          const updatedCart = JSON.parse(e.newValue);
+          setCart(updatedCart);
+          console.log("Cart updated from storage event:", updatedCart);
+        } catch (error) {
+          console.error("Error parsing cart from storage event:", error);
+        }
+      }
+    };
+
+    window.addEventListener("storage", handleStorageChange);
+    return () => window.removeEventListener("storage", handleStorageChange);
   }, []);
 
-  // Use localStorage cart if available, otherwise use initial cart or empty cart
-  const validInitialCart = useMemo(() => {
-    if (!isClient) return createEmptyCart();
-    return localCart || initialCart || createEmptyCart();
-  }, [isClient, localCart, initialCart]);
+  // Listen for custom cart update events
+  useEffect(() => {
+    const handleCartUpdate = (event: CustomEvent) => {
+      console.log("Received cart update event:", event.detail);
+      const updatedCart = loadCartFromStorage();
+      if (updatedCart) {
+        setCart(updatedCart);
+      }
+    };
 
-  const [optimisticCart, updateOptimisticCart] = useOptimistic(
-    validInitialCart,
-    cartReducer
-  );
-  const [isPending, startTransition] = useTransition();
+    window.addEventListener("cartUpdated", handleCartUpdate as EventListener);
+    return () =>
+      window.removeEventListener(
+        "cartUpdated",
+        handleCartUpdate as EventListener
+      );
+  }, []);
 
   const updateCartItem = (merchandiseId: string, updateType: UpdateType) => {
+    console.log("=== updateCartItem CALLED ===");
+    console.log("updateCartItem called:", { merchandiseId, updateType });
+    console.log("Current cart state:", cart);
+
+    if (!cart) {
+      console.log("No cart available, returning early");
+      return;
+    }
+
     startTransition(() => {
-      updateOptimisticCart({
+      console.log("=== STARTING TRANSITION ===");
+
+      // Apply the update directly to current cart
+      const updatedCart = cartReducer(cart, {
         type: "UPDATE_ITEM",
         payload: { merchandiseId, updateType },
       });
+
+      console.log("=== CART REDUCER RESULT ===");
+      console.log("Updated cart from reducer:", updatedCart);
+      console.log("Updated cart lines:", updatedCart.lines);
+      console.log("Updated cart lines count:", updatedCart.lines.length);
+
+      // Update state immediately
+      setCart(updatedCart);
+      console.log("=== STATE SET ===");
+
+      // Save to localStorage (this will trigger the custom event)
+      saveCartToStorage(updatedCart);
+      console.log("=== SAVED TO STORAGE ===");
+
+      // For delete operations, add an extra force refresh
+      if (updateType === "delete") {
+        console.log("=== DELETE OPERATION - FORCE REFRESH ===");
+        setTimeout(() => {
+          const freshCart = loadCartFromStorage();
+          if (freshCart) {
+            console.log("Force refreshing cart after delete:", freshCart);
+            setCart(freshCart);
+            // Dispatch another event to ensure all components update
+            window.dispatchEvent(
+              new CustomEvent("cartForceUpdate", {
+                detail: { cart: freshCart },
+              })
+            );
+          }
+        }, 100);
+      }
+
+      console.log("=== updateCartItem COMPLETE ===");
     });
   };
 
   const addCartItem = (variant: ProductVariant, product: Product) => {
     console.log("addCartItem called with:", { variant, product });
+
+    if (!cart) return;
+
     startTransition(() => {
-      console.log("startTransition - calling updateOptimisticCart");
-      updateOptimisticCart({ type: "ADD_ITEM", payload: { variant, product } });
+      // Apply the update directly to current cart
+      const updatedCart = cartReducer(cart, {
+        type: "ADD_ITEM",
+        payload: { variant, product },
+      });
+
+      // Update state immediately
+      setCart(updatedCart);
+
+      // Save to localStorage (this will trigger the custom event)
+      saveCartToStorage(updatedCart);
+
+      console.log("Item added to cart:", updatedCart);
     });
   };
 
   return useMemo(
     () => ({
-      cart: optimisticCart,
+      cart: cart || createEmptyCart(),
       updateCartItem,
       addCartItem,
       isPending,
     }),
-    [optimisticCart, isPending]
+    [cart, isPending]
   );
 }

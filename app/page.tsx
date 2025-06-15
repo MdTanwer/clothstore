@@ -1,10 +1,8 @@
 import HeroBanner from "@/components/hero-banner";
-import AffiliateProgram from "components/affiliate-program";
 import { Carousel } from "components/carousel";
 import ContactButton from "components/contact-button";
 import ContentBanner from "components/content-banner";
 import CookieConsent from "components/cookie-consent";
-import FoundersBio from "components/founders-bio";
 import { ThreeItemGrid } from "components/grid/three-items";
 import Footer from "components/layout/footer";
 import { Navbar } from "components/layout/navbar";
@@ -70,12 +68,6 @@ export default function HomePage() {
 
         {/* Video, Reviews & UGC Section */}
         {/* <VideoUGCSection /> */}
-
-        {/* Affiliate Program */}
-        <AffiliateProgram />
-
-        {/* Founders Bio */}
-        <FoundersBio />
 
         {/* Existing Carousel */}
         <Carousel />

@@ -1,7 +1,9 @@
 import Link from "next/link";
 
+import CurrencySwitcher from "components/currency/currency-switcher";
 import FooterMenu from "components/layout/footer-menu";
 import LogoSquare from "components/logo-square";
+import { SizeGuideButton } from "components/size-guide";
 import { getMenu } from "lib/commerce";
 import { Suspense } from "react";
 
@@ -156,12 +158,9 @@ export default async function Footer() {
                 </Link>
               </li>
               <li>
-                <Link
-                  href="/size-guide"
-                  className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
-                >
-                  Size Guide
-                </Link>
+                <div className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors">
+                  <SizeGuideButton />
+                </div>
               </li>
               <li>
                 <Link
@@ -226,6 +225,14 @@ export default async function Footer() {
                   className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
                 >
                   Affiliate Program
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/legal"
+                  className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
+                >
+                  Legal
                 </Link>
               </li>
               <li>
@@ -321,20 +328,34 @@ export default async function Footer() {
               </a>
             </div>
 
-            {/* Contact Info */}
-            <div className="space-y-2">
-              <h5 className="font-medium text-gray-900 dark:text-white">
-                Contact
-              </h5>
-              <p className="text-sm text-gray-600 dark:text-gray-400">
-                Email: hello@modestclothing.com
-              </p>
-              <p className="text-sm text-gray-600 dark:text-gray-400">
-                Phone: +44 20 7123 4567
-              </p>
-              <p className="text-sm text-gray-600 dark:text-gray-400">
-                Mon-Fri: 9AM-6PM GMT
-              </p>
+            {/* Contact Info & Currency */}
+            <div className="space-y-4">
+              <div>
+                <h5 className="font-medium text-gray-900 dark:text-white mb-2">
+                  Contact
+                </h5>
+                <div className="space-y-1">
+                  <p className="text-sm text-gray-600 dark:text-gray-400">
+                    Email: hello@modestclothing.com
+                  </p>
+                  <Link
+                    href="tel:+442071234567"
+                    className="text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
+                  >
+                    Phone: +44 20 7123 4567
+                  </Link>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">
+                    Mon-Fri: 9AM-6PM GMT
+                  </p>
+                </div>
+              </div>
+
+              <div>
+                <h5 className="font-medium text-gray-900 dark:text-white mb-2">
+                  Currency
+                </h5>
+                <CurrencySwitcher />
+              </div>
             </div>
           </div>
 

@@ -2,13 +2,90 @@
 
 import { useCart } from "components/cart/cart-context";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 
 export default function CartIcon() {
   const { cart } = useCart();
+  const [itemCount, setItemCount] = useState(0);
 
-  // Calculate total items in cart
-  const itemCount =
-    cart?.lines?.reduce((total, item) => total + item.quantity, 0) || 0;
+  // Function to calculate item count from cart
+  const calculateItemCount = (cartData: any) => {
+    return (
+      cartData?.lines?.reduce(
+        (total: number, item: any) => total + item.quantity,
+        0
+      ) || 0
+    );
+  };
+
+  // Update item count when cart prop changes
+  useEffect(() => {
+    const newItemCount = calculateItemCount(cart);
+    setItemCount(newItemCount);
+    console.log("CartIcon - cart prop updated:", cart);
+    console.log("CartIcon - itemCount from prop:", newItemCount);
+  }, [cart]);
+
+  // Listen for cart update events as backup
+  useEffect(() => {
+    const handleCartUpdate = (event: CustomEvent) => {
+      console.log("CartIcon - received cart update event:", event.detail);
+      if (event.detail?.cart) {
+        const newItemCount = calculateItemCount(event.detail.cart);
+        setItemCount(newItemCount);
+        console.log("CartIcon - itemCount from event:", newItemCount);
+      }
+    };
+
+    const handleCartForceUpdate = (event: CustomEvent) => {
+      console.log("CartIcon - received cart FORCE update event:", event.detail);
+      if (event.detail?.cart) {
+        const newItemCount = calculateItemCount(event.detail.cart);
+        setItemCount(newItemCount);
+        console.log("CartIcon - itemCount from FORCE event:", newItemCount);
+      }
+    };
+
+    window.addEventListener("cartUpdated", handleCartUpdate as EventListener);
+    window.addEventListener(
+      "cartForceUpdate",
+      handleCartForceUpdate as EventListener
+    );
+
+    return () => {
+      window.removeEventListener(
+        "cartUpdated",
+        handleCartUpdate as EventListener
+      );
+      window.removeEventListener(
+        "cartForceUpdate",
+        handleCartForceUpdate as EventListener
+      );
+    };
+  }, []);
+
+  // Polling mechanism as final fallback - check localStorage every 2 seconds
+  useEffect(() => {
+    const pollCart = () => {
+      try {
+        const storedCart = localStorage.getItem("wc-cart");
+        if (storedCart) {
+          const cartData = JSON.parse(storedCart);
+          const newItemCount = calculateItemCount(cartData);
+          if (newItemCount !== itemCount) {
+            setItemCount(newItemCount);
+            console.log("CartIcon - itemCount from polling:", newItemCount);
+          }
+        }
+      } catch (error) {
+        console.error("CartIcon - polling error:", error);
+      }
+    };
+
+    const interval = setInterval(pollCart, 2000); // Poll every 2 seconds
+
+    return () => clearInterval(interval);
+  }, [itemCount]);
 
   return (
     <Link

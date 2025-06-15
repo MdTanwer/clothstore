@@ -1,5 +1,4 @@
 import LogoSquare from "components/logo-square";
-import { SizeGuideButton } from "components/size-guide";
 import { getMenu } from "lib/commerce";
 import { MenuItem } from "lib/woocommerce/types";
 import Link from "next/link";
@@ -17,15 +16,6 @@ const mainNavItems = [
   { title: "MODEST DRESSES", url: "/collections/modest-dresses" },
 ];
 
-// Secondary navigation items
-const secondaryNavItems = [
-  { title: "About", url: "/about" },
-  { title: "Contact", url: "/contact" },
-  { title: "Size Guide", component: <SizeGuideButton /> },
-  { title: "Affiliate Program", url: "/affiliate/apply" },
-  { title: "Legal", url: "/legal" },
-];
-
 export async function Navbar() {
   const menu = await getMenu("next-js-frontend-header-menu");
   // Use WooCommerce menu if available, otherwise use default nav items
@@ -36,46 +26,6 @@ export async function Navbar() {
 
   return (
     <>
-      {/* Top Bar */}
-      <div className="border-b border-gray-100 dark:border-gray-800 bg-gray-50 dark:bg-gray-900">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="hidden lg:flex h-10 items-center justify-between text-sm">
-            <div className="hidden lg:flex items-center space-x-6">
-              <span className="text-gray-600 dark:text-gray-300">
-                Free shipping on orders over £75
-              </span>
-              <span className="text-gray-600 dark:text-gray-300">•</span>
-              <span className="text-gray-600 dark:text-gray-300">
-                14-day returns
-              </span>
-            </div>
-            <div className="items-center space-x-4 hidden lg:flex">
-              {secondaryNavItems.map((item) => (
-                <div key={item.title}>
-                  {item.component ? (
-                    item.component
-                  ) : (
-                    <Link
-                      href={item.url}
-                      className="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors"
-                    >
-                      {item.title}
-                    </Link>
-                  )}
-                </div>
-              ))}
-              <span className="text-gray-400 dark:text-gray-500">|</span>
-              <Link
-                href="tel:+442071234567"
-                className="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors"
-              >
-                +44 20 7123 4567
-              </Link>
-            </div>
-          </div>
-        </div>
-      </div>
-
       {/* Main Navigation - Adaptive Theme */}
       <nav className="sticky top-0 z-40 bg-white dark:bg-black shadow-sm">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -118,7 +68,7 @@ export async function Navbar() {
             </div>
 
             {/* Right side actions */}
-            <div className="flex items-center space-x-8">
+            <div className="flex items-center space-x-4 sm:space-x-6 lg:space-x-8">
               {/* User Menu */}
               <Suspense fallback={null}>
                 <UserMenu />
@@ -130,11 +80,22 @@ export async function Navbar() {
           </div>
         </div>
 
-        {/* Mobile Search Bar */}
+        {/* Mobile & Tablet Search Bar - Enhanced */}
         <div className="border-t border-gray-100 dark:border-gray-700 px-4 py-3 lg:hidden bg-white dark:bg-black">
           <Suspense fallback={<SearchSkeleton />}>
             <Search />
           </Suspense>
+        </div>
+
+        {/* Tablet-specific search enhancement */}
+        <div className="hidden md:block lg:hidden border-t border-gray-100 dark:border-gray-700 bg-gray-50 dark:bg-gray-900">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6">
+            <div className="py-2">
+              <p className="text-xs text-gray-500 dark:text-gray-400 text-center">
+                Search our collection of dresses and fashion items
+              </p>
+            </div>
+          </div>
         </div>
       </nav>
     </>
