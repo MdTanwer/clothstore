@@ -8,10 +8,20 @@ import { Gallery } from "components/product/gallery";
 import { ProductProvider } from "components/product/product-context";
 import { ProductDescription } from "components/product/product-description";
 import { HIDDEN_PRODUCT_TAG } from "lib/constants";
+import { CurrencyCode, DEFAULT_CURRENCY } from "lib/currency/types";
 import { getProduct, getProductRecommendations } from "lib/woocommerce";
 import { Image } from "lib/woocommerce/types";
 import Link from "next/link";
 import { Suspense } from "react";
+
+// Helper function to safely convert string to CurrencyCode
+const toCurrencyCode = (code: string): CurrencyCode => {
+  const upperCode = code.toUpperCase();
+  if (upperCode === "GBP" || upperCode === "USD" || upperCode === "EUR") {
+    return upperCode as CurrencyCode;
+  }
+  return DEFAULT_CURRENCY;
+};
 
 export async function generateMetadata(props: {
   params: Promise<{ handle: string }>;
@@ -161,8 +171,9 @@ async function RelatedProducts({ id }: { id: string }) {
                   label={{
                     title: product.title,
                     amount: product.priceRange.maxVariantPrice.amount,
-                    currencyCode:
-                      product.priceRange.maxVariantPrice.currencyCode,
+                    currencyCode: toCurrencyCode(
+                      product.priceRange.maxVariantPrice.currencyCode
+                    ),
                     regularPrice:
                       product.priceRange.maxVariantPrice.regularPrice,
                     salePrice:

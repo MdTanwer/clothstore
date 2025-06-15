@@ -1,4 +1,5 @@
 import clsx from "clsx";
+import { CurrencyCode } from "lib/currency/types";
 import Price from "./price";
 
 const Label = ({
@@ -11,7 +12,7 @@ const Label = ({
 }: {
   title: string;
   amount: string;
-  currencyCode: string;
+  currencyCode: CurrencyCode;
   position?: "bottom" | "center";
   regularPrice?: string;
   salePrice?: string;

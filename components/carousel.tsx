@@ -1,6 +1,16 @@
 import { getCollectionProducts } from "lib/commerce";
+import { CurrencyCode, DEFAULT_CURRENCY } from "lib/currency/types";
 import Link from "next/link";
 import { GridTileImage } from "./grid/tile";
+
+// Helper function to safely convert string to CurrencyCode
+const toCurrencyCode = (code: string): CurrencyCode => {
+  const upperCode = code.toUpperCase();
+  if (upperCode === "GBP" || upperCode === "USD" || upperCode === "EUR") {
+    return upperCode as CurrencyCode;
+  }
+  return DEFAULT_CURRENCY;
+};
 
 export async function Carousel() {
   // Collections that start with `hidden-*` are hidden from the search page.
@@ -30,7 +40,9 @@ export async function Carousel() {
                 label={{
                   title: product.title,
                   amount: product.priceRange.maxVariantPrice.amount,
-                  currencyCode: product.priceRange.maxVariantPrice.currencyCode,
+                  currencyCode: toCurrencyCode(
+                    product.priceRange.maxVariantPrice.currencyCode
+                  ),
                 }}
                 src={product.featuredImage?.url}
                 fill

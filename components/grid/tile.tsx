@@ -1,4 +1,5 @@
 import clsx from "clsx";
+import { CurrencyCode } from "lib/currency/types";
 import Image from "next/image";
 import Label from "../label";
 
@@ -13,7 +14,7 @@ export function GridTileImage({
   label?: {
     title: string;
     amount: string;
-    currencyCode: string;
+    currencyCode: CurrencyCode;
     position?: "bottom" | "center";
     regularPrice?: string;
     salePrice?: string;
