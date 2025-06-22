@@ -1,6 +1,5 @@
 import Link from "next/link";
 
-import CurrencySwitcher from "components/currency/currency-switcher";
 import FooterMenu from "components/layout/footer-menu";
 import LogoSquare from "components/logo-square";
 import { SizeGuideButton } from "components/size-guide";
@@ -21,20 +20,20 @@ export default async function Footer() {
   return (
     <footer className="bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-800">
       {/* Main Footer Content */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 lg:gap-12">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 lg:py-16">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-6 sm:gap-8 lg:gap-10">
           {/* Brand Section */}
-          <div className="lg:col-span-2">
+          <div className="sm:col-span-2 lg:col-span-2 xl:col-span-2">
             <Link
-              className="flex items-center gap-3 text-black dark:text-white mb-6"
+              className="flex items-center gap-3 text-black dark:text-white mb-4 sm:mb-6"
               href="/"
             >
               <LogoSquare size="sm" />
-              <span className="text-xl font-bold tracking-tight uppercase">
+              <span className="text-lg sm:text-xl font-bold tracking-tight uppercase">
                 {SITE_NAME}
               </span>
             </Link>
-            <p className="text-gray-600 dark:text-gray-400 leading-relaxed mb-8 max-w-md">
+            <p className="text-gray-600 dark:text-gray-400 leading-relaxed mb-6 sm:mb-8 max-w-md text-sm sm:text-base">
               Elegant modest fashion for the modern woman. Discover
               sophistication in every stitch with our carefully curated
               collection.
@@ -42,20 +41,20 @@ export default async function Footer() {
 
             {/* Newsletter Signup */}
             <div>
-              <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+              <h4 className="text-base sm:text-lg font-semibold text-gray-900 dark:text-white mb-3 sm:mb-4">
                 Stay Updated
               </h4>
-              <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
+              <p className="text-sm text-gray-600 dark:text-gray-400 mb-3 sm:mb-4">
                 Subscribe to get special offers, free giveaways, and exclusive
                 deals.
               </p>
-              <div className="flex max-w-md">
+              <div className="flex flex-col sm:flex-row max-w-md gap-2 sm:gap-0">
                 <input
                   type="email"
                   placeholder="Enter your email"
-                  className="flex-1 px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-l-lg text-gray-900 dark:text-white bg-white dark:bg-gray-800 placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-black dark:focus:ring-white focus:border-transparent"
+                  className="flex-1 px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 dark:border-gray-600 rounded-lg sm:rounded-l-lg sm:rounded-r-none text-gray-900 dark:text-white bg-white dark:bg-gray-800 placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-black dark:focus:ring-white focus:border-transparent text-sm sm:text-base"
                 />
-                <button className="px-6 py-3 bg-black dark:bg-white text-white dark:text-black rounded-r-lg hover:bg-gray-800 dark:hover:bg-gray-200 transition-colors font-medium">
+                <button className="px-4 sm:px-6 py-2 sm:py-3 bg-black dark:bg-white text-white dark:text-black rounded-lg sm:rounded-r-lg sm:rounded-l-none hover:bg-gray-800 dark:hover:bg-gray-200 transition-colors font-medium text-sm sm:text-base">
                   Subscribe
                 </button>
               </div>
@@ -63,15 +62,15 @@ export default async function Footer() {
           </div>
 
           {/* Customer Service */}
-          <div>
-            <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-6">
+          <div className="mt-6 sm:mt-0">
+            <h4 className="text-base sm:text-lg font-semibold text-gray-900 dark:text-white mb-4 sm:mb-6">
               Customer Service
             </h4>
-            <ul className="space-y-3">
+            <ul className="space-y-2 sm:space-y-3">
               <li>
                 <Link
                   href="/contact"
-                  className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
+                  className="text-sm sm:text-base text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
                 >
                   Contact Us
                 </Link>
@@ -79,7 +78,7 @@ export default async function Footer() {
               <li>
                 <Link
                   href="/shipping"
-                  className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
+                  className="text-sm sm:text-base text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
                 >
                   Shipping Info
                 </Link>
@@ -87,20 +86,20 @@ export default async function Footer() {
               <li>
                 <Link
                   href="/returns"
-                  className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
+                  className="text-sm sm:text-base text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
                 >
                   Returns & Exchanges
                 </Link>
               </li>
               <li>
-                <div className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors">
+                <div className="text-sm sm:text-base text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors">
                   <SizeGuideButton />
                 </div>
               </li>
               <li>
                 <Link
                   href="/care-instructions"
-                  className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
+                  className="text-sm sm:text-base text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
                 >
                   Care Instructions
                 </Link>
@@ -108,7 +107,7 @@ export default async function Footer() {
               <li>
                 <Link
                   href="/faq"
-                  className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
+                  className="text-sm sm:text-base text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
                 >
                   FAQ
                 </Link>
@@ -116,16 +115,16 @@ export default async function Footer() {
             </ul>
           </div>
 
-          {/* Company & Connect */}
-          <div>
-            <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-6">
+          {/* Company */}
+          <div className="mt-6 sm:mt-0">
+            <h4 className="text-base sm:text-lg font-semibold text-gray-900 dark:text-white mb-4 sm:mb-6">
               Company
             </h4>
-            <ul className="space-y-3 mb-8">
+            <ul className="space-y-2 sm:space-y-3">
               <li>
                 <Link
                   href="/about"
-                  className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
+                  className="text-sm sm:text-base text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
                 >
                   About Us
                 </Link>
@@ -133,7 +132,7 @@ export default async function Footer() {
               <li>
                 <Link
                   href="/our-story"
-                  className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
+                  className="text-sm sm:text-base text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
                 >
                   Our Story
                 </Link>
@@ -141,7 +140,7 @@ export default async function Footer() {
               <li>
                 <Link
                   href="/careers"
-                  className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
+                  className="text-sm sm:text-base text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
                 >
                   Careers
                 </Link>
@@ -149,15 +148,18 @@ export default async function Footer() {
               <li>
                 <Link
                   href="/affiliate/apply"
-                  className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
+                  className="text-sm sm:text-base text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
                 >
                   Affiliate Program
                 </Link>
               </li>
             </ul>
+          </div>
 
+          {/* Connect & Contact */}
+          <div className="mt-6 sm:mt-0 sm:col-span-2 lg:col-span-1">
             {/* Connect Section */}
-            <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+            <h4 className="text-base sm:text-lg font-semibold text-gray-900 dark:text-white mb-4">
               Connect
             </h4>
             <div className="flex space-x-4 mb-6">
@@ -166,8 +168,8 @@ export default async function Footer() {
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
+                aria-label="Instagram"
               >
-                <span className="sr-only">Instagram</span>
                 <svg
                   className="h-5 w-5"
                   fill="currentColor"
@@ -181,8 +183,8 @@ export default async function Footer() {
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
+                aria-label="Facebook"
               >
-                <span className="sr-only">Facebook</span>
                 <svg
                   className="h-5 w-5"
                   fill="currentColor"
@@ -196,8 +198,8 @@ export default async function Footer() {
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
+                aria-label="Pinterest"
               >
-                <span className="sr-only">Pinterest</span>
                 <svg
                   className="h-5 w-5"
                   fill="currentColor"
@@ -211,8 +213,8 @@ export default async function Footer() {
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
+                aria-label="TikTok"
               >
-                <span className="sr-only">TikTok</span>
                 <svg
                   className="h-5 w-5"
                   fill="currentColor"
@@ -223,67 +225,60 @@ export default async function Footer() {
               </a>
             </div>
 
-            {/* Contact Info & Currency */}
-            <div className="space-y-4">
-              <div>
-                <h5 className="font-medium text-gray-900 dark:text-white mb-2">
-                  Contact
-                </h5>
-                <div className="space-y-1">
-                  <p className="text-sm text-gray-600 dark:text-gray-400">
-                    Email: hello@modestclothing.com
-                  </p>
-                  <Link
-                    href="tel:+442071234567"
-                    className="text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
-                  >
-                    Phone: +44 20 7123 4567
-                  </Link>
-                  <p className="text-sm text-gray-600 dark:text-gray-400">
-                    Mon-Fri: 9AM-6PM GMT
-                  </p>
-                </div>
-              </div>
-
-              <div>
-                <h5 className="font-medium text-gray-900 dark:text-white mb-2">
-                  Currency
-                </h5>
-                <CurrencySwitcher />
+            {/* Contact Info */}
+            <div>
+              <h5 className="font-medium text-gray-900 dark:text-white mb-3">
+                Contact
+              </h5>
+              <div className="space-y-1">
+                <p className="text-sm text-gray-600 dark:text-gray-400 break-all">
+                  Email: hello@modestclothing.com
+                </p>
+                <Link
+                  href="tel:+442071234567"
+                  className="text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors block"
+                >
+                  Phone: +44 20 7123 4567
+                </Link>
+                <p className="text-sm text-gray-600 dark:text-gray-400">
+                  Mon-Fri: 9AM-6PM GMT
+                </p>
               </div>
             </div>
           </div>
 
           {/* WooCommerce Menu if available */}
           {menuItems.length > 0 && (
-            <Suspense
-              fallback={
-                <div className="flex h-[188px] w-[200px] flex-col gap-2">
-                  <div className={skeleton} />
-                  <div className={skeleton} />
-                  <div className={skeleton} />
-                  <div className={skeleton} />
-                  <div className={skeleton} />
-                  <div className={skeleton} />
-                </div>
-              }
-            >
-              <FooterMenu menu={menuItems} />
-            </Suspense>
+            <div className="mt-6 sm:mt-0 sm:col-span-2 lg:col-span-1 xl:col-span-1">
+              <Suspense
+                fallback={
+                  <div className="flex h-[188px] w-full flex-col gap-2">
+                    <div className={skeleton} />
+                    <div className={skeleton} />
+                    <div className={skeleton} />
+                    <div className={skeleton} />
+                    <div className={skeleton} />
+                    <div className={skeleton} />
+                  </div>
+                }
+              >
+                <FooterMenu menu={menuItems} />
+              </Suspense>
+            </div>
           )}
         </div>
       </div>
 
       {/* Bottom Section */}
       <div className="border-t border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-800">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-          <div className="flex flex-col md:flex-row items-center justify-between space-y-4 md:space-y-0">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6">
+          <div className="flex flex-col sm:flex-row items-center justify-between space-y-3 sm:space-y-0">
             {/* Copyright */}
-            <div className="flex flex-col md:flex-row items-center space-y-2 md:space-y-0 md:space-x-6">
+            <div className="flex flex-col sm:flex-row items-center space-y-2 sm:space-y-0 sm:space-x-6 text-center sm:text-left">
               <p className="text-sm text-gray-600 dark:text-gray-400">
                 &copy; {copyrightDate} {copyrightName}. All rights reserved.
               </p>
-              <div className="flex space-x-6 text-sm">
+              <div className="flex flex-wrap justify-center sm:justify-start space-x-4 sm:space-x-6 text-sm">
                 <Link
                   href="/privacy"
                   className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
