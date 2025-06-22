@@ -11,7 +11,7 @@ import UserMenu from "./user-menu";
 // Main navigation items matching the WooCommerce categories
 const mainNavItems = [
   { title: "POPULAR DRESSES", url: "/collections/popular-styles" },
-  { title: "CONTACT", url: "/contact" },
+  // { title: "CONTACT", url: "/contact" },
   { title: "NEW IN", url: "/collections/new-in" },
   { title: "MODEST DRESSES", url: "/collections/modest-dresses" },
 ];
