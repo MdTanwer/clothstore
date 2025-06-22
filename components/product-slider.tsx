@@ -144,25 +144,19 @@ export default function ProductSlider({
         <div className="flex items-center justify-between mb-8">
           <div>
             <h2 className="text-3xl font-bold text-gray-900 mb-2">{title}</h2>
-            {subtitle && <p className="text-gray-600">{subtitle}</p>}
-            {autoSlide && (
-              <p className="text-sm text-gray-500 mt-1">
-                Auto-sliding • Hover to pause
-              </p>
-            )}
           </div>
 
           <div className="flex gap-2">
             <button
               onClick={prevSlide}
-              className="p-2 rounded-full border border-gray-300 hover:bg-gray-50 transition-colors"
+              className="p-2 rounded-full border border-gray-700 text-gray-700 hover:bg-gray-900 hover:text-white transition-colors"
               aria-label="Previous products"
             >
               <ChevronLeftIcon className="h-5 w-5" />
             </button>
             <button
               onClick={nextSlide}
-              className="p-2 rounded-full border border-gray-300 hover:bg-gray-50 transition-colors"
+              className="p-2 rounded-full border border-gray-700 text-gray-700 hover:bg-gray-900 hover:text-white transition-colors"
               aria-label="Next products"
             >
               <ChevronRightIcon className="h-5 w-5" />
