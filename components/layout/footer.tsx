@@ -62,47 +62,6 @@ export default async function Footer() {
             </div>
           </div>
 
-          {/* Shop Categories */}
-          <div>
-            <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-6">
-              Shop
-            </h4>
-            <ul className="space-y-3">
-              <li>
-                <Link
-                  href="/collections/new-in"
-                  className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
-                >
-                  New In
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/collections/modest-dresses"
-                  className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
-                >
-                  Modest Dresses
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/collections/popular-styles"
-                  className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
-                >
-                  Popular Styles
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/collections/workwear"
-                  className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
-                >
-                  Workwear
-                </Link>
-              </li>
-            </ul>
-          </div>
-
           {/* Customer Service */}
           <div>
             <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-6">
@@ -152,14 +111,6 @@ export default async function Footer() {
                   className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
                 >
                   FAQ
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/track-order"
-                  className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
-                >
-                  Track Your Order
                 </Link>
               </li>
             </ul>
@@ -351,48 +302,6 @@ export default async function Footer() {
                 >
                   Cookie Policy
                 </Link>
-              </div>
-            </div>
-
-            {/* Payment Methods & Security */}
-            <div className="flex items-center space-x-6">
-              <div className="flex items-center space-x-2">
-                <span className="text-sm text-gray-500 dark:text-gray-400">
-                  We accept:
-                </span>
-                <div className="flex space-x-1">
-                  <div className="w-10 h-6 bg-gradient-to-r from-blue-600 to-blue-800 rounded flex items-center justify-center">
-                    <span className="text-white text-xs font-bold">VISA</span>
-                  </div>
-                  <div className="w-10 h-6 bg-gradient-to-r from-red-600 to-orange-600 rounded flex items-center justify-center">
-                    <span className="text-white text-xs font-bold">MC</span>
-                  </div>
-                  <div className="w-10 h-6 bg-gradient-to-r from-blue-400 to-blue-600 rounded flex items-center justify-center">
-                    <span className="text-white text-xs font-bold">AMEX</span>
-                  </div>
-                  <div className="w-10 h-6 bg-gradient-to-r from-blue-600 to-indigo-600 rounded flex items-center justify-center">
-                    <span className="text-white text-xs font-bold">PayPal</span>
-                  </div>
-                </div>
-              </div>
-
-              <div className="flex items-center space-x-2">
-                <div className="w-5 h-5 bg-green-600 rounded-full flex items-center justify-center">
-                  <svg
-                    className="w-3 h-3 text-white"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
-                </div>
-                <span className="text-sm text-gray-500 dark:text-gray-400">
-                  SSL Secured
-                </span>
               </div>
             </div>
           </div>
