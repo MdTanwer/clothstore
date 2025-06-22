@@ -8,6 +8,48 @@ export const metadata = {
   description: "Search for products in the store.",
 };
 
+// Helper function to check if any search words match in the text
+function matchesSearchWords(text: string, searchWords: string[]): boolean {
+  if (!text) return false;
+  const lowerText = text.toLowerCase();
+  return searchWords.some((word) => lowerText.includes(word));
+}
+
+// Helper function to calculate search relevance score
+function calculateRelevanceScore(product: any, searchWords: string[]): number {
+  let score = 0;
+  const title = product.title?.toLowerCase() || "";
+  const description = product.description?.toLowerCase() || "";
+  const plainDescription = description.replace(/<[^>]*>/g, ""); // Remove HTML tags
+
+  // Title matches get highest score
+  searchWords.forEach((word) => {
+    if (title.includes(word)) {
+      score += title === word ? 10 : 5; // Exact match vs partial match
+    }
+  });
+
+  // Description matches get medium score
+  searchWords.forEach((word) => {
+    if (plainDescription.includes(word)) {
+      score += 3;
+    }
+  });
+
+  // Tag matches get lower score
+  if (product.tags) {
+    product.tags.forEach((tag: string) => {
+      searchWords.forEach((word) => {
+        if (tag.toLowerCase().includes(word)) {
+          score += 2;
+        }
+      });
+    });
+  }
+
+  return score;
+}
+
 export default async function SearchPage(props: {
   searchParams?: Promise<{ [key: string]: string | string[] | undefined }>;
 }) {
@@ -20,19 +62,49 @@ export default async function SearchPage(props: {
   // For search, we'll get all products and filter client-side since WooCommerce doesn't support search in this function
   const allProducts = await getProducts(100, undefined, sortKey, reverse);
 
-  // Filter products by search query if provided
-  const products = searchValue
-    ? allProducts.filter(
-        (product) =>
-          product.title.toLowerCase().includes(searchValue.toLowerCase()) ||
-          product.description
-            ?.toLowerCase()
-            .includes(searchValue.toLowerCase()) ||
-          product.tags.some((tag) =>
-            tag.toLowerCase().includes(searchValue.toLowerCase())
+  // Enhanced search logic with word-by-word matching
+  let products = allProducts;
+
+  if (searchValue) {
+    // Split search query into individual words and filter out empty strings
+    const searchWords = searchValue
+      .toLowerCase()
+      .split(/\s+/)
+      .filter((word) => word.length > 0);
+
+    if (searchWords.length > 0) {
+      // Filter products that match any search word
+      const matchingProducts = allProducts.filter((product) => {
+        // Check title
+        if (matchesSearchWords(product.title, searchWords)) return true;
+
+        // Check description (remove HTML tags for better matching)
+        const plainDescription =
+          product.description?.replace(/<[^>]*>/g, "") || "";
+        if (matchesSearchWords(plainDescription, searchWords)) return true;
+
+        // Check tags
+        if (
+          product.tags &&
+          product.tags.some((tag: string) =>
+            matchesSearchWords(tag, searchWords)
           )
-      )
-    : allProducts;
+        )
+          return true;
+
+        return false;
+      });
+
+      // Sort by relevance score (highest first)
+      products = matchingProducts
+        .map((product) => ({
+          ...product,
+          relevanceScore: calculateRelevanceScore(product, searchWords),
+        }))
+        .sort((a, b) => b.relevanceScore - a.relevanceScore)
+        .map(({ relevanceScore, ...product }) => product); // Remove relevanceScore from final result
+    }
+  }
 
   const resultsText = products.length > 1 ? "results" : "result";
 
@@ -44,19 +116,26 @@ export default async function SearchPage(props: {
           {searchValue ? (
             <div className="text-center sm:text-left">
               <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white mb-2">
-                Search Results
+                Search Results for "{searchValue}"
               </h1>
               <p className="text-gray-600 dark:text-gray-400 text-sm sm:text-base">
-                {products.length === 0
-                  ? "No products found for "
-                  : `Found ${products.length} ${resultsText} for `}
-                <span className="font-semibold text-gray-900 dark:text-white">
-                  &quot;{searchValue}&quot;
-                </span>
+                {products.length > 0 ? (
+                  <>
+                    Found {products.length} {resultsText}
+                    {searchValue.includes(" ") && (
+                      <span className="block mt-1 text-xs text-gray-500 dark:text-gray-500">
+                        Showing products matching any of these words:{" "}
+                        {searchValue}
+                      </span>
+                    )}
+                  </>
+                ) : (
+                  "No products found"
+                )}
               </p>
             </div>
           ) : (
-            <div className="text-center sm:text-left">
+            <div className="text-center sm:text-left border-b border-gray-200 dark:border-gray-800 pb-4">
               <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white mb-2">
                 All Products
               </h1>
@@ -67,75 +146,32 @@ export default async function SearchPage(props: {
           )}
         </div>
 
-        {/* No Results State */}
-        {searchValue && products.length === 0 && (
-          <div className="text-center py-12">
-            <div className="w-16 h-16 mx-auto mb-4 text-gray-400">
-              <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={1}
-                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-                />
-              </svg>
-            </div>
-            <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">
-              No products found
-            </h3>
-            <p className="text-gray-600 dark:text-gray-400 mb-6 max-w-md mx-auto">
-              We couldn't find any products matching your search. Try different
-              keywords or browse our categories.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-3 justify-center">
-              <a
-                href="/"
-                className="inline-flex items-center justify-center px-6 py-3 bg-black dark:bg-white text-white dark:text-black font-medium rounded-lg hover:bg-gray-800 dark:hover:bg-gray-200 transition-colors"
-              >
-                Browse All Products
-              </a>
-              <a
-                href="/collections"
-                className="inline-flex items-center justify-center px-6 py-3 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 font-medium rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
-              >
-                View Collections
-              </a>
-            </div>
-          </div>
-        )}
-
         {/* Search Results Grid */}
-        {products.length > 0 && (
+        {products.length > 0 ? (
           <div className="space-y-6">
-            {/* Mobile/Tablet Filter Bar (if needed in future) */}
-            <div className="flex items-center justify-between lg:hidden">
-              <span className="text-sm text-gray-600 dark:text-gray-400">
-                {products.length} {resultsText}
-              </span>
-              {/* Future: Add sort/filter options for mobile */}
-            </div>
-
-            {/* Products Grid - Responsive */}
-            <Grid className="grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3 xl:grid-cols-4">
+            {/* Products Grid - 2 columns on tablet, responsive for other sizes */}
+            <Grid className="grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
               <ProductGridItems products={products} />
             </Grid>
           </div>
-        )}
-
-        {/* Search Tips for Mobile */}
-        {searchValue && products.length > 0 && (
-          <div className="mt-12 bg-gray-50 dark:bg-gray-800 rounded-lg p-6 lg:hidden">
-            <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-3">
-              Search Tips
-            </h3>
-            <ul className="text-sm text-gray-600 dark:text-gray-400 space-y-2">
-              <li>• Try different keywords or synonyms</li>
-              <li>• Check your spelling</li>
-              <li>• Use more general terms</li>
-              <li>• Browse our categories for inspiration</li>
-            </ul>
+        ) : searchValue ? (
+          <div className="text-center py-12">
+            <div className="max-w-md mx-auto">
+              <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">
+                No products found
+              </h3>
+              <p className="text-gray-600 dark:text-gray-400 mb-4">
+                Try searching with different keywords or browse all products.
+              </p>
+              <a
+                href="/search"
+                className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-black hover:bg-gray-800 dark:bg-white dark:text-black dark:hover:bg-gray-200 transition-colors"
+              >
+                View All Products
+              </a>
+            </div>
           </div>
-        )}
+        ) : null}
       </div>
     </div>
   );

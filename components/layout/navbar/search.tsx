@@ -107,7 +107,8 @@ export default function Search() {
       saveRecentSearch(query.trim());
       setShowSuggestions(false);
       setIsExpanded(false);
-      // Form will handle the navigation
+      // Navigate to search results
+      window.location.href = `/search?q=${encodeURIComponent(query.trim())}`;
     }
   };
 

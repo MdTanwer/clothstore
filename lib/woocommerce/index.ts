@@ -14,17 +14,34 @@ const wooApi = {
   get: async (endpoint: string, params?: any) => {
     try {
       const url = `${wooApi.baseUrl}/wp-json/wc/v3/${endpoint}`;
+      console.log(`Making WooCommerce API request to: ${url}`);
+      console.log(`With params:`, params);
+
       const response = await axios.get(url, {
         params: {
           ...params,
           consumer_key: wooApi.consumerKey,
           consumer_secret: wooApi.consumerSecret,
         },
+        timeout: 10000, // 10 second timeout
       });
       return { data: response.data };
-    } catch (error) {
-      console.error(`WooCommerce API GET error for ${endpoint}:`, error);
-      return { data: [] };
+    } catch (error: any) {
+      console.error(`WooCommerce API GET error for ${endpoint}:`, {
+        message: error.message,
+        status: error.response?.status,
+        statusText: error.response?.statusText,
+        data: error.response?.data,
+        url: `${wooApi.baseUrl}/wp-json/wc/v3/${endpoint}`,
+        params: params,
+      });
+
+      // Return empty array for products endpoint to prevent app crash
+      if (endpoint === "products") {
+        return { data: [] };
+      }
+
+      throw error;
     }
   },
 
@@ -37,10 +54,17 @@ const wooApi = {
           consumer_key: wooApi.consumerKey,
           consumer_secret: wooApi.consumerSecret,
         },
+        timeout: 10000,
       });
       return { data: response.data };
-    } catch (error) {
-      console.error(`WooCommerce API POST error for ${endpoint}:`, error);
+    } catch (error: any) {
+      console.error(`WooCommerce API POST error for ${endpoint}:`, {
+        message: error.message,
+        status: error.response?.status,
+        statusText: error.response?.statusText,
+        data: error.response?.data,
+        url: `${wooApi.baseUrl}/wp-json/wc/v3/${endpoint}`,
+      });
       return { data: null };
     }
   },
@@ -56,7 +80,7 @@ export const getProducts = cache(
   ): Promise<Product[]> => {
     try {
       const params: any = {
-        per_page: limit,
+        per_page: Math.min(limit, 100), // WooCommerce has a max limit of 100
         status: "publish",
       };
 
@@ -65,11 +89,30 @@ export const getProducts = cache(
       }
 
       if (sortKey) {
-        params.orderby = sortKey.toLowerCase();
+        // Map common sort keys to WooCommerce equivalents
+        const sortKeyMap: Record<string, string> = {
+          title: "title",
+          price: "price",
+          date: "date",
+          popularity: "popularity",
+          rating: "rating",
+          menu_order: "menu_order",
+        };
+
+        const mappedSortKey = sortKeyMap[sortKey.toLowerCase()] || "date";
+        params.orderby = mappedSortKey;
         params.order = reverse ? "desc" : "asc";
       }
 
+      console.log("Fetching products with params:", params);
       const response = await wooApi.get("products", params);
+
+      if (!response.data || !Array.isArray(response.data)) {
+        console.warn("No products data received or data is not an array");
+        return [];
+      }
+
+      console.log(`Successfully fetched ${response.data.length} products`);
 
       return response.data.map((product: any) => ({
         id: product.id.toString(),
@@ -87,15 +130,15 @@ export const getProducts = cache(
           })) || [],
         priceRange: {
           maxVariantPrice: {
-            amount: product.price,
+            amount: product.price || "0",
             currencyCode: "GBP",
-            regularPrice: product.regular_price,
+            regularPrice: product.regular_price || "0",
             salePrice: product.sale_price ? product.sale_price : null,
           },
           minVariantPrice: {
-            amount: product.price,
+            amount: product.price || "0",
             currencyCode: "GBP",
-            regularPrice: product.regular_price,
+            regularPrice: product.regular_price || "0",
             salePrice: product.sale_price ? product.sale_price : null,
           },
         },
@@ -111,9 +154,9 @@ export const getProducts = cache(
                 value: attr.options?.[0] || "",
               })) || [],
             price: {
-              amount: product.price,
+              amount: product.price || "0",
               currencyCode: "GBP",
-              regularPrice: product.regular_price,
+              regularPrice: product.regular_price || "0",
               salePrice: product.sale_price ? product.sale_price : null,
             },
           },
@@ -124,10 +167,11 @@ export const getProducts = cache(
           width: 800,
           height: 800,
         },
-        categories: product.categories?.map((category: any) => ({
-          slug: category.slug,
-          name: category.name,
-        })),
+        categories:
+          product.categories?.map((category: any) => ({
+            slug: category.slug,
+            name: category.name,
+          })) || [],
 
         images:
           product.images?.map((image: any) => ({
@@ -162,6 +206,7 @@ export const getProducts = cache(
       }));
     } catch (error) {
       console.error("Error fetching WooCommerce products:", error);
+      // Return empty array instead of throwing to prevent app crash
       return [];
     }
   }

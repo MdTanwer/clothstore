@@ -86,17 +86,6 @@ export async function Navbar() {
             <Search />
           </Suspense>
         </div>
-
-        {/* Tablet-specific search enhancement */}
-        <div className="hidden md:block lg:hidden border-t border-gray-100 dark:border-gray-700 bg-gray-50 dark:bg-gray-900">
-          <div className="mx-auto max-w-7xl px-4 sm:px-6">
-            <div className="py-2">
-              <p className="text-xs text-gray-500 dark:text-gray-400 text-center">
-                Search our collection of dresses and fashion items
-              </p>
-            </div>
-          </div>
-        </div>
       </nav>
     </>
   );

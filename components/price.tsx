@@ -46,10 +46,10 @@ const Price = ({
   ) {
     return (
       <p suppressHydrationWarning={true} className={className} {...props}>
-        <span className="font-semibold text-red-600">
+        <span className="font-semibold text-red-700">
           {convertAndFormatPrice(salePrice)}
         </span>
-        <span className="ml-2 text-gray-500 line-through">
+        <span className="ml-2 text-gray-900 line-through">
           {convertAndFormatPrice(regularPrice)}
         </span>
       </p>
