@@ -100,30 +100,6 @@ export default async function Footer() {
                   Workwear
                 </Link>
               </li>
-              <li>
-                <Link
-                  href="/collections/evening-wear"
-                  className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
-                >
-                  Evening Wear
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/collections/accessories"
-                  className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
-                >
-                  Accessories
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/search"
-                  className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
-                >
-                  View All
-                </Link>
-              </li>
             </ul>
           </div>
 
@@ -225,38 +201,6 @@ export default async function Footer() {
                   className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
                 >
                   Affiliate Program
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/legal"
-                  className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
-                >
-                  Legal
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/wholesale"
-                  className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
-                >
-                  Wholesale
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/sustainability"
-                  className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
-                >
-                  Sustainability
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/blog"
-                  className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
-                >
-                  Blog
                 </Link>
               </li>
             </ul>
