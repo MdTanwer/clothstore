@@ -1,10 +1,5 @@
 "use client";
 
-import {
-  FunnelIcon,
-  SparklesIcon,
-  StarIcon,
-} from "@heroicons/react/24/outline";
 import { useCart } from "components/cart/cart-context";
 import { Product } from "lib/woocommerce/types";
 import Image from "next/image";
@@ -131,33 +126,6 @@ export default function NewInClient({ products }: NewInClientProps) {
 
   return (
     <div className="min-h-screen bg-white dark:bg-gray-900">
-      {/* Hero Section */}
-      <div className="relative bg-gradient-to-r from-purple-600 to-pink-600 text-white">
-        <div className="absolute inset-0 bg-black opacity-20"></div>
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
-          <div className="text-center">
-            <div className="flex items-center justify-center mb-6">
-              <SparklesIcon className="h-8 w-8 mr-3" />
-              <h1 className="text-4xl md:text-6xl font-bold">New In</h1>
-            </div>
-            <p className="text-xl md:text-2xl mb-8 max-w-3xl mx-auto">
-              Discover our latest arrivals. Fresh styles and trending fashion
-              pieces just added to our collection.
-            </p>
-            <div className="flex items-center justify-center space-x-4 text-sm">
-              <div className="flex items-center">
-                <StarIcon className="h-5 w-5 mr-1" />
-                <span>New Arrivals Weekly</span>
-              </div>
-              <div className="flex items-center">
-                <SparklesIcon className="h-5 w-5 mr-1" />
-                <span>Trending Styles</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
       {/* Filters and Sorting */}
       <div className="bg-gray-50 dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
@@ -177,33 +145,6 @@ export default function NewInClient({ products }: NewInClientProps) {
                   {category}
                 </button>
               ))}
-            </div>
-
-            {/* Sort and Filter Controls */}
-            <div className="flex items-center space-x-4">
-              <select
-                value={sortBy}
-                onChange={(e) => setSortBy(e.target.value)}
-                className="px-4 py-2 border border-gray-300 rounded-lg bg-white dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-              >
-                {sortOptions.map((option) => (
-                  <option key={option.value} value={option.value}>
-                    {option.label}
-                  </option>
-                ))}
-              </select>
-
-              <button
-                onClick={() => setShowFilters(!showFilters)}
-                className="flex items-center px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 dark:border-gray-600 dark:hover:bg-gray-700"
-              >
-                <FunnelIcon className="h-5 w-5 mr-2" />
-                Filters
-              </button>
-
-              <div className="text-sm text-gray-600 dark:text-gray-400">
-                {sortedProducts.length} products
-              </div>
             </div>
           </div>
         </div>
@@ -236,9 +177,6 @@ export default function NewInClient({ products }: NewInClientProps) {
 
                   {/* Badges */}
                   <div className="absolute top-3 left-3 flex flex-col space-y-2">
-                    <span className="px-2 py-1 bg-purple-600 text-white text-xs font-medium rounded">
-                      New
-                    </span>
                     {isOnSale(product) && (
                       <span className="px-2 py-1 bg-red-500 text-white text-xs font-medium rounded">
                         Sale
@@ -250,24 +188,6 @@ export default function NewInClient({ products }: NewInClientProps) {
                       </span>
                     )}
                   </div>
-
-                  {/* Wishlist Button */}
-                  <button
-                    onClick={(e) => {
-                      e.preventDefault();
-                      e.stopPropagation();
-                      toggleWishlist(product.id);
-                    }}
-                    className="absolute top-3 right-3 p-2 rounded-full bg-white/80 hover:bg-white transition-colors"
-                  >
-                    <StarIcon
-                      className={`h-5 w-5 ${
-                        wishlist.includes(product.id)
-                          ? "text-yellow-500 fill-current"
-                          : "text-gray-600"
-                      }`}
-                    />
-                  </button>
                 </div>
 
                 {/* Product Info */}
