@@ -1,7 +1,7 @@
 import Footer from "components/layout/footer";
 import { Navbar } from "components/layout/navbar";
 import { getProducts } from "lib/woocommerce";
-import PopularStylesClient from "../popular-styles/popular-styles-client";
+import NewInClient from "./new-in-client";
 
 export const metadata = {
   title: "New In | Klassy & Fab",
@@ -16,14 +16,7 @@ export default async function NewInPage() {
   return (
     <>
       <Navbar />
-
-      <div className="min-h-screen bg-white dark:bg-gray-900">
-        {/* Header */}
-
-        {/* Products */}
-        <PopularStylesClient products={products} categoryTitle="New In" />
-      </div>
-
+      <NewInClient products={products} />
       <Footer />
     </>
   );

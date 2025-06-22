@@ -3,6 +3,7 @@
 import { useCart } from "components/cart/cart-context";
 import { Product } from "lib/woocommerce/types";
 import Image from "next/image";
+import Link from "next/link";
 import { useState } from "react";
 
 interface PopularStylesClientProps {
@@ -27,7 +28,11 @@ export default function PopularStylesClient({
     );
   };
 
-  const handleAddToCart = async (product: Product) => {
+  const handleAddToCart = async (product: Product, event: React.MouseEvent) => {
+    // Prevent navigation when clicking Add to Cart
+    event.preventDefault();
+    event.stopPropagation();
+
     setAddingToCart(product.id);
 
     try {
@@ -55,6 +60,12 @@ export default function PopularStylesClient({
       console.error("Error adding to cart:", error);
       setAddingToCart(null);
     }
+  };
+
+  const handleQuickView = (event: React.MouseEvent) => {
+    // Prevent navigation when clicking Quick View
+    event.preventDefault();
+    event.stopPropagation();
   };
 
   // Get unique categories from products
@@ -136,9 +147,10 @@ export default function PopularStylesClient({
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
             {sortedProducts.map((product) => (
-              <div
+              <Link
                 key={product.id}
-                className="group relative bg-white dark:bg-gray-800 rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300"
+                href={`/product/${product.handle}`}
+                className="group relative bg-white dark:bg-gray-800 rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 block"
               >
                 {/* Product Image */}
                 <div className="relative aspect-[3/4] overflow-hidden">
@@ -165,12 +177,12 @@ export default function PopularStylesClient({
 
                   {/* Quick Actions Overlay */}
                   <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 transition-all duration-300 flex items-end justify-center pb-4 opacity-0 group-hover:opacity-100">
-                    <a
-                      href={`/product/${product.handle}`}
+                    <button
+                      onClick={handleQuickView}
                       className="px-6 py-2 bg-white text-black dark:bg-gray-800 dark:text-white font-medium rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
                     >
                       Quick View
-                    </a>
+                    </button>
                   </div>
                 </div>
 
@@ -208,7 +220,7 @@ export default function PopularStylesClient({
 
                   {/* Add to Cart Button */}
                   <button
-                    onClick={() => handleAddToCart(product)}
+                    onClick={(e) => handleAddToCart(product, e)}
                     disabled={
                       !product.availableForSale || addingToCart === product.id
                     }
@@ -227,7 +239,7 @@ export default function PopularStylesClient({
                         : "Add to Cart"}
                   </button>
                 </div>
-              </div>
+              </Link>
             ))}
           </div>
         )}
