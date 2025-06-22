@@ -244,13 +244,13 @@ export default function AboutPage() {
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link
                 href="/collections"
-                className="inline-flex items-center justify-center px-8 py-3 bg-white text-black rounded-lg font-medium hover:bg-gray-100 transition-colors"
+                className="inline-flex items-center justify-center px-8 py-3 bg-white text-black dark:bg-gray-800 dark:text-white rounded-lg font-medium hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
               >
                 Explore Our Collection
               </Link>
               <Link
                 href="/contact"
-                className="inline-flex items-center justify-center px-8 py-3 border border-white text-white rounded-lg font-medium hover:bg-white hover:text-black transition-colors"
+                className="inline-flex items-center justify-center px-8 py-3 border border-white text-white rounded-lg font-medium hover:bg-white hover:text-black dark:hover:bg-gray-800 dark:hover:text-white dark:hover:border-gray-600 transition-colors"
               >
                 Get in Touch
               </Link>

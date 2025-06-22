@@ -13,16 +13,40 @@ const wooApi = {
 
   get: async (endpoint: string, params?: any) => {
     try {
-      const url = `${wooApi.baseUrl}/wp-json/wc/v3/${endpoint}`;
-      console.log(`Making WooCommerce API request to: ${url}`);
-      console.log(`With params:`, params);
+      // Check if we're running on the client side (browser)
+      const isClient = typeof window !== "undefined";
 
-      const response = await axios.get(url, {
-        params: {
+      let url: string;
+      let requestParams: any = {};
+
+      if (isClient && endpoint === "products") {
+        // Use the proxy API route for client-side requests to avoid CORS
+        url = "/api/woocommerce/products";
+        requestParams = params || {};
+      } else if (isClient && endpoint === "products/categories") {
+        // Use the proxy API route for categories
+        url = "/api/woocommerce/categories";
+        requestParams = params || {};
+      } else {
+        // Use direct API for server-side requests
+        url = `${wooApi.baseUrl}/wp-json/wc/v3/${endpoint}`;
+        requestParams = {
           ...params,
           consumer_key: wooApi.consumerKey,
           consumer_secret: wooApi.consumerSecret,
-        },
+        };
+      }
+
+      console.log(`Making WooCommerce API request to: ${url}`);
+      console.log(
+        `With params:`,
+        isClient
+          ? requestParams
+          : { ...requestParams, consumer_secret: "***hidden***" }
+      );
+
+      const response = await axios.get(url, {
+        params: requestParams,
         timeout: 10000, // 10 second timeout
       });
       return { data: response.data };
@@ -32,12 +56,18 @@ const wooApi = {
         status: error.response?.status,
         statusText: error.response?.statusText,
         data: error.response?.data,
-        url: `${wooApi.baseUrl}/wp-json/wc/v3/${endpoint}`,
+        url:
+          typeof window !== "undefined" &&
+          (endpoint === "products" || endpoint === "products/categories")
+            ? endpoint === "products"
+              ? "/api/woocommerce/products"
+              : "/api/woocommerce/categories"
+            : `${wooApi.baseUrl}/wp-json/wc/v3/${endpoint}`,
         params: params,
       });
 
       // Return empty array for products endpoint to prevent app crash
-      if (endpoint === "products") {
+      if (endpoint === "products" || endpoint === "products/categories") {
         return { data: [] };
       }
 
