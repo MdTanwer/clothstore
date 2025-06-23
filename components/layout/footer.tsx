@@ -21,9 +21,9 @@ export default async function Footer() {
     <footer className="bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-800">
       {/* Main Footer Content */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 lg:py-16">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-6 sm:gap-8 lg:gap-10">
+        <div className="grid grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-6 sm:gap-8 lg:gap-10">
           {/* Brand Section */}
-          <div className="sm:col-span-2 lg:col-span-2 xl:col-span-2">
+          <div className="col-span-2 lg:col-span-2 xl:col-span-2">
             <Link
               className="flex items-center gap-3 text-black dark:text-white mb-4 sm:mb-6"
               href="/"
@@ -157,7 +157,7 @@ export default async function Footer() {
           </div>
 
           {/* Connect & Contact */}
-          <div className="mt-6 sm:mt-0 sm:col-span-2 lg:col-span-1">
+          <div className="mt-6 sm:mt-0 col-span-2 lg:col-span-1">
             {/* Connect Section */}
             <h4 className="text-base sm:text-lg font-semibold text-gray-900 dark:text-white mb-4">
               Connect
@@ -249,7 +249,7 @@ export default async function Footer() {
 
           {/* WooCommerce Menu if available */}
           {menuItems.length > 0 && (
-            <div className="mt-6 sm:mt-0 sm:col-span-2 lg:col-span-1 xl:col-span-1">
+            <div className="mt-6 sm:mt-0 col-span-2 lg:col-span-1 xl:col-span-1">
               <Suspense
                 fallback={
                   <div className="flex h-[188px] w-full flex-col gap-2">
