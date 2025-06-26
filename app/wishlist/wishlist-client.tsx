@@ -53,7 +53,7 @@ const initialWishlistItems = [
       "https://images.unsplash.com/photo-1469334031218-e382a71b716b?w=600&h=800&fit=crop",
     category: "Dresses",
     size: ["XS", "S", "M", "L", "XL"],
-    color: ["Deep Purple", "Emerald", "Navy", "Black"],
+    color: ["Deep Black", "Emerald", "Navy", "Black"],
     rating: 4.9,
     reviews: 89,
     badge: "Premium",
@@ -237,7 +237,7 @@ export default function WishlistClient() {
               </div>
             </div>
             <div className="text-center p-4 bg-white dark:bg-gray-800 rounded-lg">
-              <div className="text-2xl font-bold text-purple-600 dark:text-purple-400">
+              <div className="text-2xl font-bold text-black dark:text-gray-400">
                 {selectedItems.length}
               </div>
               <div className="text-sm text-gray-600 dark:text-gray-400">
@@ -351,7 +351,7 @@ export default function WishlistClient() {
                     <span
                       className={`px-2 py-1 text-white text-xs font-medium rounded ${
                         item.badge === "Premium"
-                          ? "bg-purple-600"
+                          ? "bg-black"
                           : item.badge === "New"
                             ? "bg-green-500"
                             : item.badge === "Bestseller"

@@ -74,14 +74,14 @@ export default function ContactButton() {
                 }
                 className="flex items-start gap-3 p-3 rounded-lg hover:bg-white/20 dark:hover:bg-black/20 transition-colors group backdrop-blur-sm"
               >
-                <div className="flex-shrink-0 p-2 bg-purple-100/80 dark:bg-purple-900/50 rounded-lg group-hover:bg-purple-200/80 dark:group-hover:bg-purple-800/50 transition-colors backdrop-blur-sm">
-                  <option.icon className="h-4 w-4 text-purple-600 dark:text-purple-400" />
+                <div className="flex-shrink-0 p-2 bg-gray-100/80 dark:bg-gray-900/50 rounded-lg group-hover:bg-gray-200/80 dark:group-hover:bg-gray-800/50 transition-colors backdrop-blur-sm">
+                  <option.icon className="h-4 w-4 text-black dark:text-gray-400" />
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="font-medium text-gray-900 dark:text-white text-sm">
                     {option.label}
                   </div>
-                  <div className="text-purple-600 dark:text-purple-400 text-sm truncate">
+                  <div className="text-black dark:text-gray-400 text-sm truncate">
                     {option.value}
                   </div>
                   <div className="text-xs text-gray-500 dark:text-gray-400 mt-1">
@@ -97,7 +97,7 @@ export default function ContactButton() {
               You can also visit our{" "}
               <a
                 href="/faq"
-                className="text-purple-600 dark:text-purple-400 hover:underline"
+                className="text-black dark:text-gray-400 hover:underline"
               >
                 FAQ page
               </a>{" "}

@@ -60,9 +60,7 @@ export default function FoundersBio() {
                 <h3 className="text-xl font-bold text-gray-900 mb-2">
                   {founder.name}
                 </h3>
-                <p className="text-purple-600 font-medium mb-4">
-                  {founder.role}
-                </p>
+                <p className="text-black font-medium mb-4">{founder.role}</p>
                 <p className="text-gray-600 leading-relaxed">{founder.bio}</p>
               </div>
             </div>
@@ -93,7 +91,7 @@ export default function FoundersBio() {
 
               <Link
                 href="/about"
-                className="inline-flex items-center text-purple-600 font-medium hover:text-purple-700 transition-colors group"
+                className="inline-flex items-center text-black font-medium hover:text-gray-700 transition-colors group"
               >
                 Read our full story
                 <ArrowRightIcon className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
@@ -104,33 +102,25 @@ export default function FoundersBio() {
             <div className="space-y-6">
               <div className="grid grid-cols-2 gap-6">
                 <div className="text-center p-4 bg-white rounded-lg">
-                  <div className="text-2xl font-bold text-purple-600 mb-1">
-                    25+
-                  </div>
+                  <div className="text-2xl font-bold text-black mb-1">25+</div>
                   <div className="text-sm text-gray-600">Countries Served</div>
                 </div>
                 <div className="text-center p-4 bg-white rounded-lg">
-                  <div className="text-2xl font-bold text-purple-600 mb-1">
-                    10K+
-                  </div>
+                  <div className="text-2xl font-bold text-black mb-1">10K+</div>
                   <div className="text-sm text-gray-600">Happy Customers</div>
                 </div>
                 <div className="text-center p-4 bg-white rounded-lg">
-                  <div className="text-2xl font-bold text-purple-600 mb-1">
-                    500+
-                  </div>
+                  <div className="text-2xl font-bold text-black mb-1">500+</div>
                   <div className="text-sm text-gray-600">Unique Designs</div>
                 </div>
                 <div className="text-center p-4 bg-white rounded-lg">
-                  <div className="text-2xl font-bold text-purple-600 mb-1">
-                    4.8★
-                  </div>
+                  <div className="text-2xl font-bold text-black mb-1">4.8★</div>
                   <div className="text-sm text-gray-600">Customer Rating</div>
                 </div>
               </div>
 
               {/* Mission Statement */}
-              <div className="bg-gradient-to-r from-purple-500 to-pink-500 p-6 rounded-lg text-white">
+              <div className="bg-gradient-to-r from-gray-500 to-pink-500 p-6 rounded-lg text-white">
                 <h4 className="font-semibold mb-2">Our Mission</h4>
                 <p className="text-sm leading-relaxed">
                   To empower women worldwide with beautiful, contemporary modest

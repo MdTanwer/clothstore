@@ -48,7 +48,7 @@ export default function HeroBanner() {
         <div className="absolute bottom-1/3 left-1/6 w-1 h-1 bg-white/40 rounded-full animate-ping delay-500"></div>
 
         {/* Animated gradient orbs */}
-        <div className="absolute top-20 right-20 w-32 h-32 bg-gradient-to-br from-purple-400/10 to-pink-400/10 rounded-full blur-2xl animate-pulse"></div>
+        <div className="absolute top-20 right-20 w-32 h-32 bg-gradient-to-br from-gray-400/10 to-pink-400/10 rounded-full blur-2xl animate-pulse"></div>
         <div className="absolute bottom-20 left-20 w-24 h-24 bg-gradient-to-br from-blue-400/10 to-cyan-400/10 rounded-full blur-xl animate-bounce delay-1000"></div>
       </div>
 

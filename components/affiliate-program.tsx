@@ -32,12 +32,12 @@ const benefits = [
 
 export default function AffiliateProgram() {
   return (
-    <section className="py-16 bg-gradient-to-br from-purple-50 to-pink-50">
+    <section className="py-16 bg-gradient-to-br from-gray-50 to-pink-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           {/* Content */}
           <div>
-            <div className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-purple-100 text-purple-800 mb-4">
+            <div className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-gray-100 text-gray-800 mb-4">
               💰 Partner Program
             </div>
 
@@ -56,7 +56,7 @@ export default function AffiliateProgram() {
               {benefits.map((benefit) => (
                 <div key={benefit.title} className="flex items-start gap-3">
                   <div className="flex-shrink-0">
-                    <benefit.icon className="h-6 w-6 text-purple-600" />
+                    <benefit.icon className="h-6 w-6 text-black" />
                   </div>
                   <div>
                     <h3 className="font-semibold text-gray-900 mb-1">
@@ -74,7 +74,7 @@ export default function AffiliateProgram() {
             <div className="flex flex-col sm:flex-row gap-4">
               <Link
                 href="/affiliate/apply"
-                className="inline-flex items-center justify-center px-6 py-3 bg-purple-600 text-white font-medium rounded-lg hover:bg-purple-700 transition-colors group"
+                className="inline-flex items-center justify-center px-6 py-3 bg-black text-white font-medium rounded-lg hover:bg-gray-800 transition-colors group"
               >
                 Apply Now
                 <ArrowRightIcon className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
@@ -82,7 +82,7 @@ export default function AffiliateProgram() {
 
               <Link
                 href="/affiliate/learn-more"
-                className="inline-flex items-center justify-center px-6 py-3 border border-purple-600 text-purple-600 font-medium rounded-lg hover:bg-purple-50 transition-colors"
+                className="inline-flex items-center justify-center px-6 py-3 border border-black text-black font-medium rounded-lg hover:bg-gray-50 transition-colors"
               >
                 Learn More
               </Link>
@@ -93,8 +93,8 @@ export default function AffiliateProgram() {
           <div className="relative">
             <div className="relative z-10 bg-white rounded-2xl shadow-xl p-8">
               <div className="text-center mb-6">
-                <div className="inline-flex items-center justify-center w-16 h-16 bg-purple-100 rounded-full mb-4">
-                  <CurrencyDollarIcon className="h-8 w-8 text-purple-600" />
+                <div className="inline-flex items-center justify-center w-16 h-16 bg-gray-100 rounded-full mb-4">
+                  <CurrencyDollarIcon className="h-8 w-8 text-black" />
                 </div>
                 <h3 className="text-xl font-bold text-gray-900 mb-2">
                   Start Earning Today
@@ -107,7 +107,7 @@ export default function AffiliateProgram() {
                   <span className="text-sm font-medium text-gray-700">
                     Average Commission
                   </span>
-                  <span className="text-lg font-bold text-purple-600">12%</span>
+                  <span className="text-lg font-bold text-black">12%</span>
                 </div>
 
                 <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
@@ -129,7 +129,7 @@ export default function AffiliateProgram() {
                 </div>
               </div>
 
-              <div className="mt-6 p-4 bg-gradient-to-r from-purple-500 to-pink-500 rounded-lg text-white text-center">
+              <div className="mt-6 p-4 bg-gradient-to-r from-gray-500 to-pink-500 rounded-lg text-white text-center">
                 <p className="text-sm font-medium">
                   🎉 Limited Time: Double commission for first 30 days!
                 </p>
@@ -137,8 +137,8 @@ export default function AffiliateProgram() {
             </div>
 
             {/* Background decoration */}
-            <div className="absolute -top-4 -right-4 w-72 h-72 bg-gradient-to-br from-purple-200 to-pink-200 rounded-full opacity-20 -z-10" />
-            <div className="absolute -bottom-4 -left-4 w-48 h-48 bg-gradient-to-tr from-purple-200 to-pink-200 rounded-full opacity-20 -z-10" />
+            <div className="absolute -top-4 -right-4 w-72 h-72 bg-gradient-to-br from-gray-200 to-pink-200 rounded-full opacity-20 -z-10" />
+            <div className="absolute -bottom-4 -left-4 w-48 h-48 bg-gradient-to-tr from-gray-200 to-pink-200 rounded-full opacity-20 -z-10" />
           </div>
         </div>
       </div>

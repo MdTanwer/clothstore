@@ -40,7 +40,7 @@ export default async function RootLayout({
 
   return (
     <html lang="en" className={inter.variable}>
-      <body className="bg-neutral-50 text-black selection:bg-purple-500 selection:text-white dark:text-white">
+      <body className="bg-neutral-50 text-black selection:bg-black selection:text-white dark:text-white">
         <CurrencyProvider>
           <CartProvider cartPromise={cartPromise}>
             <Toaster closeButton richColors />

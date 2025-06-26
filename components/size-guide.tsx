@@ -127,7 +127,7 @@ export default function SizeGuide({ isOpen, onClose }: SizeGuideProps) {
                 onClick={() => setActiveTab(key as "tops" | "bottoms")}
                 className={`px-4 py-2 font-medium border-b-2 transition-colors ${
                   activeTab === key
-                    ? "border-purple-600 text-purple-600"
+                    ? "border-black text-black"
                     : "border-transparent text-gray-600 hover:text-gray-900"
                 }`}
               >
@@ -198,13 +198,13 @@ export default function SizeGuide({ isOpen, onClose }: SizeGuideProps) {
               <div className="space-y-2">
                 <a
                   href="mailto:hello@modestclothing.com"
-                  className="block text-sm text-purple-600 hover:underline"
+                  className="block text-sm text-black hover:underline"
                 >
                   Email: hello@modestclothing.com
                 </a>
                 <a
                   href="tel:+442071234567"
-                  className="block text-sm text-purple-600 hover:underline"
+                  className="block text-sm text-black hover:underline"
                 >
                   Phone: +44 20 7123 4567
                 </a>
@@ -225,7 +225,7 @@ export function SizeGuideButton() {
     <>
       <button
         onClick={() => setIsOpen(true)}
-        className="inline-flex items-center text-sm text-purple-600 hover:text-purple-700 underline"
+        className="inline-flex items-center text-sm text-black hover:text-gray-700 underline"
       >
         <QuestionMarkCircleIcon className="h-4 w-4 mr-1" />
         Size Guide

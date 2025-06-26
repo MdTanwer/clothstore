@@ -88,7 +88,7 @@ export default function InteractiveBanner() {
                   />
                 ) : (
                   // Fallback gradient background when image fails
-                  <div className="w-full h-full bg-gradient-to-br from-purple-500 via-pink-500 to-red-500 flex items-center justify-center">
+                  <div className="w-full h-full bg-gradient-to-br from-gray-500 via-pink-500 to-red-500 flex items-center justify-center">
                     <div className="text-white text-center">
                       <div className="text-6xl mb-4">👗</div>
                       <h3 className="text-2xl font-bold">Fashion Collection</h3>

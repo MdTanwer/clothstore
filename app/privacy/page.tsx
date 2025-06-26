@@ -137,7 +137,7 @@ export default function PrivacyPage() {
               To exercise any of these rights, please contact us at{" "}
               <a
                 href="mailto:privacy@modestclothing.com"
-                className="text-purple-600 hover:underline"
+                className="text-black hover:underline"
               >
                 privacy@modestclothing.com
               </a>
@@ -153,7 +153,7 @@ export default function PrivacyPage() {
               experience. You can control cookie preferences through our cookie
               consent banner or your browser settings. For detailed information
               about our cookie usage, please see our{" "}
-              <a href="/cookies" className="text-purple-600 hover:underline">
+              <a href="/cookies" className="text-black hover:underline">
                 Cookie Policy
               </a>
               .
@@ -229,7 +229,7 @@ export default function PrivacyPage() {
                 Email:{" "}
                 <a
                   href="mailto:privacy@modestclothing.com"
-                  className="text-purple-600 hover:underline"
+                  className="text-black hover:underline"
                 >
                   privacy@modestclothing.com
                 </a>

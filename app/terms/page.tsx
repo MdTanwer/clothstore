@@ -243,7 +243,7 @@ export default function TermsPage() {
                 an online dispute resolution platform available at{" "}
                 <a
                   href="https://ec.europa.eu/consumers/odr/"
-                  className="text-blue-600 hover:underline"
+                  className="text-black hover:underline"
                 >
                   ec.europa.eu/consumers/odr/
                 </a>
@@ -276,7 +276,7 @@ export default function TermsPage() {
                 Email:{" "}
                 <a
                   href="mailto:legal@modestclothing.com"
-                  className="text-purple-600 hover:underline"
+                  className="text-black hover:underline"
                 >
                   legal@modestclothing.com
                 </a>

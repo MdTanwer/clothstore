@@ -138,7 +138,7 @@ export default function NewInClient({ products }: NewInClientProps) {
                   onClick={() => setSelectedCategory(category)}
                   className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
                     selectedCategory === category
-                      ? "bg-purple-600 text-white"
+                      ? "bg-black text-white"
                       : "bg-white text-gray-700 hover:bg-gray-100 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600"
                   }`}
                 >
@@ -232,8 +232,8 @@ export default function NewInClient({ products }: NewInClientProps) {
                       !product.availableForSale
                         ? "bg-gray-300 text-gray-500 cursor-not-allowed"
                         : addingToCart === product.id
-                          ? "bg-green-600 text-white"
-                          : "bg-purple-600 text-white hover:bg-purple-700"
+                          ? "bg-black text-white"
+                          : "bg-black text-white hover:bg-gray-800"
                     }`}
                   >
                     {!product.availableForSale
