@@ -89,14 +89,8 @@ export default function HeroBanner() {
               href="/collections/new-in"
               className="group relative inline-flex items-center justify-center px-12 py-4 bg-white/95 dark:bg-gray-900/95 backdrop-blur-sm text-black dark:text-white font-medium text-lg tracking-wider uppercase rounded-none hover:bg-white dark:hover:bg-gray-900 transition-all duration-500 shadow-lg hover:shadow-2xl transform hover:scale-105 hover:-translate-y-1 active:scale-95"
             >
-              {/* Button background animation */}
-              <div className="absolute inset-0 bg-gradient-to-r from-purple-500/20 to-pink-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-
               <span className="relative z-10">Shop Now</span>
               <ArrowRightIcon className="relative z-10 ml-3 h-5 w-5 group-hover:translate-x-2 transition-transform duration-500" />
-
-              {/* Button shine effect */}
-              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-out"></div>
             </Link>
           </div>
 

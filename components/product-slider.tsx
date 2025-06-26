@@ -113,7 +113,7 @@ export default function ProductSlider({
 
   if (isLoading) {
     return (
-      <section className="py-12 bg-white">
+      <section className="py-12 bg-white border-2 border-red-500">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="animate-pulse">
             <div className="h-8 bg-gray-200 rounded w-1/4 mb-4"></div>
@@ -179,9 +179,9 @@ export default function ProductSlider({
               <div key={product.id} className="flex-none w-64 snap-start">
                 <Link
                   href={`/product/${product.handle}`}
-                  className="group block"
+                  className="group block border-2 border-gray-300 dark:border-gray-600 hover:border-blue-500 dark:hover:border-blue-400 rounded-lg overflow-hidden transition-all duration-300"
                 >
-                  <div className="relative aspect-square overflow-hidden rounded-lg bg-gray-100 mb-4">
+                  <div className="relative aspect-square overflow-hidden bg-gray-100 mb-4">
                     <img
                       src={product.featuredImage.url}
                       alt={product.featuredImage.altText}
@@ -194,19 +194,21 @@ export default function ProductSlider({
                     )}
                   </div>
 
-                  <h3 className="text-sm font-medium text-gray-900 mb-1 group-hover:text-gray-700 transition-colors">
-                    {product.title}
-                  </h3>
+                  <div className="px-3 pb-3">
+                    <h3 className="text-sm font-medium text-gray-900 mb-2 group-hover:text-gray-700 transition-colors">
+                      {product.title}
+                    </h3>
 
-                  <div className="flex items-center justify-between">
-                    <span className="text-lg font-semibold text-gray-900">
-                      £{product.priceRange.minVariantPrice.amount}
-                    </span>
-                    {!product.availableForSale && (
-                      <span className="text-sm text-red-600 font-medium">
-                        Sold Out
+                    <div className="flex items-center justify-between">
+                      <span className="text-lg font-semibold text-gray-900">
+                        £{product.priceRange.minVariantPrice.amount}
                       </span>
-                    )}
+                      {!product.availableForSale && (
+                        <span className="text-sm text-red-600 font-medium">
+                          Sold Out
+                        </span>
+                      )}
+                    </div>
                   </div>
                 </Link>
               </div>

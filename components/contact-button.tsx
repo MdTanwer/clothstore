@@ -41,7 +41,7 @@ export default function ContactButton() {
       <div className="fixed bottom-6 right-6 z-40">
         <button
           onClick={() => setIsOpen(!isOpen)}
-          className="bg-purple-600 hover:bg-purple-700 text-white rounded-full p-4 shadow-lg transition-all duration-300 hover:scale-110"
+          className="bg-black hover:bg-gray-900 cursor-pointer text-white rounded-full p-4 shadow-lg transition-all duration-300 hover:scale-110"
         >
           {isOpen ? (
             <XMarkIcon className="h-6 w-6" />

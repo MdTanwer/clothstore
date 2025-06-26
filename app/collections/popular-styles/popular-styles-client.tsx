@@ -150,7 +150,7 @@ export default function PopularStylesClient({
               <Link
                 key={product.id}
                 href={`/product/${product.handle}`}
-                className="group relative bg-white dark:bg-gray-800 rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 block"
+                className="group relative bg-white dark:bg-gray-800 rounded-lg overflow-hidden shadow-lg hover:shadow-xl border-2 border-gray-300 dark:border-gray-600 hover:border-blue-500 dark:hover:border-blue-400 transition-all duration-300 block"
               >
                 {/* Product Image */}
                 <div className="relative aspect-[3/4] overflow-hidden">
@@ -187,7 +187,7 @@ export default function PopularStylesClient({
                 </div>
 
                 {/* Product Info */}
-                <div className="p-4">
+                <div className="p-6">
                   <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2 group-hover:text-gray-700 dark:group-hover:text-gray-300 transition-colors">
                     {product.title}
                   </h3>

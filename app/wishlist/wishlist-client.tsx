@@ -313,7 +313,7 @@ export default function WishlistClient() {
           {sortedItems.map((item) => (
             <div
               key={item.id}
-              className={`group relative bg-white dark:bg-gray-800 rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 ${
+              className={`group relative bg-white dark:bg-gray-800 rounded-lg overflow-hidden shadow-lg hover:shadow-xl border-2 border-gray-300 dark:border-gray-600 hover:border-blue-500 dark:hover:border-blue-400 transition-all duration-300 ${
                 selectedItems.includes(item.id) ? "ring-2 ring-pink-500" : ""
               } ${!item.inStock ? "opacity-75" : ""}`}
             >
@@ -389,7 +389,7 @@ export default function WishlistClient() {
               </div>
 
               {/* Product Info */}
-              <div className="p-4">
+              <div className="p-6">
                 <div className="flex items-center space-x-1 mb-2">
                   {[...Array(5)].map((_, i) => (
                     <StarIcon

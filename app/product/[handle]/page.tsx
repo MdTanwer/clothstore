@@ -159,7 +159,10 @@ async function RelatedProducts({ id }: { id: string }) {
       </h2>
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {relatedProducts.slice(0, 4).map((product) => (
-          <div key={product.handle} className="group">
+          <div
+            key={product.handle}
+            className="group border-2 border-gray-300 dark:border-gray-600 hover:border-blue-500 dark:hover:border-blue-400 rounded-lg overflow-hidden transition-all duration-300"
+          >
             <Link
               href={`/product/${product.handle}`}
               prefetch={true}
@@ -184,7 +187,7 @@ async function RelatedProducts({ id }: { id: string }) {
                   sizes="(min-width: 1024px) 25vw, (min-width: 768px) 33vw, 50vw"
                 />
               </div>
-              <div className="mt-4 space-y-2">
+              <div className="mt-4 px-3 pb-3 space-y-2">
                 <h3 className="text-sm font-medium text-gray-900 dark:text-white group-hover:text-gray-600 dark:group-hover:text-gray-300">
                   {product.title}
                 </h3>

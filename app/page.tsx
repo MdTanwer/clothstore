@@ -1,9 +1,9 @@
 import HeroBanner from "@/components/hero-banner";
 import { Carousel } from "components/carousel";
 import ContactButton from "components/contact-button";
-import ContentBanner from "components/content-banner";
 import CookieConsent from "components/cookie-consent";
 import { ThreeItemGrid } from "components/grid/three-items";
+import InteractiveBanner from "components/interactive-banner";
 import Footer from "components/layout/footer";
 import { Navbar } from "components/layout/navbar";
 import NewsletterPopup from "components/newsletter-popup";
@@ -47,17 +47,8 @@ export default function HomePage() {
         {/* Three Item Grid (existing component) */}
         <ThreeItemGrid />
 
-        {/* Second Content Banner */}
-        <ContentBanner
-          title="Modest Workwear"
-          subtitle="Professional Collection"
-          description="Elevate your professional wardrobe with our sophisticated workwear collection. Designed for the modern working woman who values both style and modesty."
-          buttonText="Shop Workwear"
-          buttonLink="/collections/workwear"
-          backgroundColor="bg-gradient-to-r from-gray-50 to-gray-100"
-          textColor="dark"
-          layout="left"
-        />
+        {/* Interactive Banner */}
+        <InteractiveBanner />
 
         {/* Sale Items */}
         <ProductSlider
